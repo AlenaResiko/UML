@@ -32,7 +32,7 @@ env/
 
 # Editors, IDEs and OS files
 .DS_Store         # macOS
-.vscode/          # Visual Studio Code
+.vscode/          
 .idea/            # IntelliJ IDEA / PyCharm
 *.sublime-project # Sublime Text
 *.sublime-workspace
@@ -92,4 +92,4 @@ static_collected/
 scratch/
 vault/
 *.code-workspace
-.vscode/
+!data/

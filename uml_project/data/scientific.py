@@ -108,6 +108,7 @@ def save_texsource_jsons(texsrc: TexSource, out_dir: Path | None = None, timeout
             "raw_tex": raw_tex,
         }
         with open(outpath, "w", encoding="utf-8") as fp:
+            print(f"Saving to {outpath}")
             json.dump(payload, fp, ensure_ascii=False, indent=2)
         saved_paths.append(outpath)
 

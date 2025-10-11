@@ -3,7 +3,7 @@ from pathlib import Path
 import typing as t
 
 # PATHS
-ROOT_DIR = Path(os.environ.get("DATA_DIR") or Path(__file__).parent.parent).resolve()
+ROOT_DIR = Path(os.environ.get("DATA_DIR") or Path(__file__).parent.parent.parent).resolve() / "data"
 MUSIC_DIR = ROOT_DIR / "music/"
 SCRATCH_DIR = ROOT_DIR / "scratch/"  # for temporary files
 SCIENTIFIC_DIR = ROOT_DIR / "scientific/"

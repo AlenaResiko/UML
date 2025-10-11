@@ -17,6 +17,6 @@ GENIUS_ACCESS_TOKEN = os.environ.get("GENIUS_ACCESS_TOKEN")  # Store in .env fil
 
 # Dtypes
 class TexSource(t.TypedDict):
-    id: t.Optional[str]
+    id: t.Optional[str]  # e.g. "2503.19280v1"
     files: list[dict[str, str]]  # {"name": str, "text": str}
     main: t.Optional[str]  # main .tex file name

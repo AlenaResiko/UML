@@ -1,7 +1,40 @@
+def _extract_title_from_tex(tex: str) -> str | None:
+    """
+    Extracts the LaTeX title from a TeX document string.
+    - Strips comments (ignoring escaped percent).
+    - Finds \title[optional]{...} (captures multiline).
+    - Cleans result: removes \thanks{...}, \footnote{...}, collapses \\ and ~ to spaces, collapses whitespace.
+    - Returns cleaned title or None if not found.
+    """
+    import re
+
+    # Remove comments (ignore escaped %)
+    tex_nocomment = re.sub(r"(?<!\\)%.*", "", tex)
+    # Match \title[optional]{...}
+    m = re.search(r"\\title(?:\[[^\]]*\])?\{(.*?)\}", tex_nocomment, flags=re.S)
+    if not m:
+        return None
+    title = m.group(1)
+    if not title:
+        return None
+    # Remove \thanks{...}, \footnote{...}, etc.
+    title = re.sub(r"\\(thanks|footnote)\{.*?\}", "", title, flags=re.S)
+    # Replace \\ and ~ with spaces
+    title = re.sub(r"\\\\|~", " ", title)
+    # Collapse all whitespace to single space
+    title = re.sub(r"\s+", " ", title)
+    # Strip
+    title = title.strip()
+    if not title:
+        return None
+    return title
+
+
 import re
 import io
 import tarfile
 import requests
+import html
 
 # ------------------------
 # TeX source fetching (arXiv)
@@ -20,6 +53,49 @@ def _slugify_title(s: str) -> str:
     return s or "paper"
 
 
+def _clean_arxiv_title(title: str) -> str:
+    # Unescape HTML entities
+    title = html.unescape(title)
+
+    # Remove any remaining XML/HTML tags
+    title = re.sub(r"<.*?>", "", title)
+
+    # Remove LaTeX commands wrapping text: \emph{...}, \textbf{...}, \texorpdfstring{A}{B}
+    # For \texorpdfstring, keep first brace content
+    def replace_latex_cmd(m):
+        cmd = m.group(1)
+        content = m.group(2)
+        if cmd == "texorpdfstring":
+            # Extract first brace content only
+            first_brace = re.match(r"\{(.*?)\}", content)
+            if first_brace:
+                return first_brace.group(1)
+            return ""
+        return content
+
+    # Match commands with one or two brace groups, keep first content
+    # This regex matches commands like \emph{...}, \textbf{...}, \texorpdfstring{...}{...}
+    title = re.sub(
+        r"\\(emph|textbf|textit|textrm|texttt|texorpdfstring)\{([^{}]*)(?:\}\{[^{}]*\})?\}", replace_latex_cmd, title
+    )
+
+    # Remove inline math $...$ and display math \( ... \), \[ ... \]
+    title = re.sub(r"\$(?:[^$]|\\\$)+\$", "", title)
+    title = re.sub(r"\\\((?:[^\\)]|\\.)*\\\)", "", title)
+    title = re.sub(r"\\\[(?:[^\]\\]|\\.)*\\\]", "", title)
+
+    # Collapse all whitespace (including newlines and tabs) to single spaces
+    title = re.sub(r"\s+", " ", title)
+
+    # Trim spaces around punctuation (e.g., " , " -> ", ")
+    title = re.sub(r"\s*([,;:.!?])\s*", r"\1 ", title)
+
+    # Strip leading/trailing whitespace again
+    title = title.strip()
+
+    return title
+
+
 def _fetch_arxiv_metadata_safe(arxiv_id: str, timeout: int = 30) -> dict | None:
     """
     Lightweight arXiv metadata fetcher that returns:
@@ -34,7 +110,10 @@ def _fetch_arxiv_metadata_safe(arxiv_id: str, timeout: int = 30) -> dict | None:
         # extract title (2nd <title>), published (full date), authors, and year
         titles = re.findall(r"<title>(.*?)</title>", xml, flags=re.S)
         title = titles[1].strip() if len(titles) >= 2 else None
-        title = re.sub(r"<.*?>", "", title) if title else None
+        if title:
+            title = _clean_arxiv_title(title)
+        else:
+            title = None
         authors = [re.sub(r"<.*?>", "", a).strip() for a in re.findall(r"<name>(.*?)</name>", xml)]
         published = None
         m = re.search(r"<published>(\d{4}-\d{2}-\d{2})", xml)

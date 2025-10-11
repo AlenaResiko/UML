@@ -10,6 +10,7 @@ from uml_project.data.utils.latex_helpers import (
     _guess_main_tex,
     _fetch_arxiv_metadata_safe,
     _slugify_title,
+    _extract_title_from_tex,
 )
 
 
@@ -25,6 +26,27 @@ def fetch_tex_sources(url: str, timeout: int = 60):
     arx_id, ver = arxiv
     tar_bytes = _download_arxiv_source(arx_id, ver, timeout=timeout)
     tex_members, all_members = _extract_tex_from_tar(tar_bytes)
+    main = _guess_main_tex([n for n, _ in tex_members])
+    # Try to extract title from main tex, fallback to arXiv metadata if needed
+    raw_main_text = None
+    tex_title = None
+    if main:
+        for n, raw in tex_members:
+            if n == main:
+                try:
+                    raw_main_text = raw.decode("utf-8", errors="strict")
+                except UnicodeDecodeError:
+                    raw_main_text = raw.decode("latin-1", errors="strict")
+                break
+        if raw_main_text is not None:
+            tex_title = _extract_title_from_tex(raw_main_text)
+    meta_title = None
+    if not tex_title:
+        # fallback to arXiv metadata
+        meta = _fetch_arxiv_metadata_safe(arx_id)
+        if meta:
+            meta_title = meta.get("title")
+    # Clean up files as before
     files = []
     for name, raw in tex_members:
         try:
@@ -32,11 +54,13 @@ def fetch_tex_sources(url: str, timeout: int = 60):
         except UnicodeDecodeError:
             text = raw.decode("latin-1", errors="replace")
         text = text.replace("%", "")
+        text = text.replace("=", "")
         # Collapse all consecutive spaces (2 or more) into exactly 3 spaces
         text = re.sub(r" {2,}", "   ", text)
         files.append({"name": name, "text": text})
-    main = _guess_main_tex([n for n, _ in tex_members])
-    return TexSource(id=f"{arx_id}{ver or ''}", files=files, main=main)
+    # Title selection: prefer tex_title, then meta_title, else None
+    title = tex_title or meta_title or None
+    return TexSource(id=f"{arx_id}{ver or ''}", files=files, main=main, title=title)
 
 
 def save_texsource_jsons(texsrc: TexSource, out_dir: Path | None = None, timeout: int = 30) -> list[str]:
@@ -58,18 +82,21 @@ def save_texsource_jsons(texsrc: TexSource, out_dir: Path | None = None, timeout
     Path(outdir).mkdir(parents=True, exist_ok=True)
 
     # Try to fetch metadata from arXiv if an id is present
-    title = None
+    # Title preference: texsrc.get("title"), then arXiv metadata, then main tex stem
+    title = texsrc.get("title")
     authors: list[str] = []
     date_published: str | None = None
 
     arx_id_with_ver = texsrc.get("id")
+    meta = None
     if arx_id_with_ver:
         m = re.search(r"(\d{4}\.\d{4,5})", arx_id_with_ver)
         if m:
             base_id = m.group(1)
             meta = _fetch_arxiv_metadata_safe(base_id, timeout=timeout)
             if meta:
-                title = meta.get("title") or title
+                if not title:
+                    title = meta.get("title") or title
                 authors = meta.get("authors") or authors
                 # Prefer full published date if available; fallback to year
                 if meta.get("published"):

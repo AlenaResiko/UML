@@ -21,3 +21,4 @@ class TexSource(t.TypedDict):
     id: str | None  # e.g. "2503.19280v1"
     files: list[dict[str, str]]  # {"name": str, "text": str}
     main: str | None  # main .tex file name
+    title: str | None  # extracted title, if any

@@ -8,6 +8,6 @@ Create api https://genius.com/api-clients
 pip install lyricsgenius https://pypi.org/project/lyricsgenius/
 """
 
-import os
 
-MUSIC_DIR = os.path.join(os.environ["DATA_DIR"], "music/")
+def genius_util():
+    raise NotImplementedError("This file is ignored for now")

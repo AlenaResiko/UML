@@ -1,1 +1,2 @@
-TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"
+def kaggle_util():
+    raise NotImplementedError("This file is ignored for now")

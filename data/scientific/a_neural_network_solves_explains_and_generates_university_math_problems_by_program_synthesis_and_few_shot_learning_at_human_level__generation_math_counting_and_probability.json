@@ -1,0 +1,25 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Sarah Zhang",
+    "Reece Shuttleworth",
+    "Leonard Tang",
+    "Albert Lu",
+    "Elizabeth Ke",
+    "Kevin Liu",
+    "Linda Chen",
+    "Sunny Tran",
+    "Newman Cheng",
+    "Roman Wang",
+    "Nikhil Singh",
+    "Taylor L. Patti",
+    "Jayson Lynch",
+    "Avi Shporer",
+    "Nakul Verma",
+    "Eugene Wu",
+    "Gilbert Strang"
+  ],
+  "date_published": "2021-12-31",
+  "raw_tex": "\\section{Generation of MATH: Counting and Probability}\n\\label{sec:generation-MATH-Counting-and-Probability}\n\n\\begin{longtable}{|l|p{8cm}|p{8cm}|} \n\\caption{New questions generated from Counting \\& Probability questions in the MATH dataset, and the closest question among the existing questions.}\\\\\n\\hline\n\\textbf{ID} & \\textbf{Auto-Generated question} & \\textbf{Closest question in the dataset}\\\\\n\\hline\n1 & How many ways are there to divide a set of $10$ objects into two sets of equal size?& \nCompute $\\dbinom{8}{4}$.\n\\\\\n\\hline\n2 & How many ways are there to tile a $4\\times 4$ square with $1\\times 1$ squares?& \nIn how many ways can George choose two out of seven colors to paint his room?\n\\\\\n\\hline\n3 & How many ways are there to place a black and a white knight on a $3\\times 3$ chessboard so that they do not attack each other?&\nHow many odd numbers between $100$ and $999$ have distinct digits?\n\\\\\n\\hline\n4 & A regular $n$-sided polygon is inscribed in a circle of radius $r$. The area of the polygon is $m$, and the area of the circle is $n$. Find $m + n.$\n& \nIn how many ways can George choose two out of seven colors to paint his room?\n\\\\ \n\\hline\n5 & How many ways are there to place a $2\\times 2$ grid of squares on a $4\\times 4$ chessboard so that no two squares are adjacent?& \nIn how many ways can George choose two out of seven colors to paint his room?\n\\\\\n\\hline\n6 & A standard six-sided fair die is rolled four times. The probability that the product of all four numbers rolled is a perfect square is $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m-n$.&\nA standard six-sided fair die is rolled four times. The probability that the product of all four numbers rolled is a perfect square is $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.\n\\\\\n\\hline\n7 & How many ways are there to place $n$ distinguishable objects into $n$ indistinguishable boxes?& \nIn how many ways can George choose two out of seven colors to paint his room?\n\\\\\n\\hline\n8 & How many ways are there to fill a $4\\times 4$ grid with $1$s and $0$s, if each row and each column must have exactly $2$ $1$s? & \nIn how many ways can George choose two out of seven colors to paint his room?\n\\\\\n\\hline\n9 & How many ways are there to tile a $4\\times 4$ square with $1\\times 2$ rectangles? & \nIn how many ways can George choose two out of seven colors to paint his room?\n\\\\\n\\hline\n10 & How many ways are there to place a non-attacking white and black pawn on a $4\\times 4$ chessboard? & \nHow many odd numbers between $100$ and $999$ have distinct digits?\n\\\\\n\\hline\n\\end{longtable}",
+  "title": "A Neural Network Solves, Explains, and Generates University Math Problems by Program Synthesis and Few-Shot Learning at Human Level"
+}

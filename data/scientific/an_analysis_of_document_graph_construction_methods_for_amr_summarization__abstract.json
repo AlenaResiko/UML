@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\begin{abstract}\n   Abstract Meaning Representation (AMR) is a graph-based semantic representation for sentences, composed of collections of concepts linked by semantic relations. AMR-based approaches have found success in a variety of applications, but a challenge to using it in tasks that require document-level context is that it only represents individual sentences. Prior work in AMR-based summarization has automatically merged the individual sentence graphs into a document graph, but the method of merging and its effects on summary content selection have not been independently evaluated. In this paper, we present a novel dataset consisting of human-annotated alignments between the nodes of paired documents and summaries which may be used to evaluate (1) merge strategies; and (2) the performance of content selection methods over nodes of a merged or unmerged AMR graph. We apply these two forms of evaluation to prior work as well as \n   CK removed these three words to remove a singleton line.\n   to \n   a new method \n   we present \n   for node merging and show that our new method has significantly better performance than prior work.\n\\end{abstract}",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

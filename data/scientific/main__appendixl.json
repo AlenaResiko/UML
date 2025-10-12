@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\\section{IMO Combinatorics Limitation Examples}\n\\label{appendix:L}\n\nHere are examples that approach does not handle and may not be suitable for a game representation or simulations.\n\n\\subsection{Problems that Require Finding Invariants}\nIn IMO 2011 Problem 2, also known as the Windmill problem, which our approach does not represent as a game, the solution requires finding an invariant.\n\n\\begin{tcolorbox}[enhanced, breakable, rounded corners,\n   colbackred!5!white, colframered!75!black,\n   colbacktitlered!85!black, fonttitle\\bfseries, coltitlewhite, titleIMO 2011 Problem 2 (Windmill)]\n\n\\setlength{\\parskip}{1em}\nLet $\\mathcal{S}$ be a finite set of at least two points in the plane. Assume that no three points of $\\mathcal{S}$ are collinear. A windmill is a process that starts with a line $\\ell$ going through a single point $P \\in \\mathcal{S}$. The line rotates clockwise about the pivot $P$ until the first time that the line meets some other point belonging to $\\mathcal{S}$. This point, $Q$, takes over as the new pivot, and the line now rotates clockwise about $Q$, until it next meets a point of $\\mathcal{S}$. This process continues indefinitely.\\\\\nShow that we can choose a point $P$ in $\\mathcal{S}$ and a line $\\ell$ going through $P$ such that the resulting windmill uses each point of $\\mathcal{S}$ as a pivot infinitely many times.\n\\end{tcolorbox}\n\n\n\\subsection{Problems in High Dimensional Spaces}\nIn IMO 2010 Problem 5, the solution requires showing that one of the boxes contains exactly $2010^{2010^{2010}}$ coins. Our visual approach is suitable for simulating small instances of games rather than high dimensional spaces.\n\n\\begin{tcolorbox}[enhanced, breakable, rounded corners,\n   colbackred!5!white, colframered!75!black,\n   colbacktitlered!85!black, fonttitle\\bfseries, coltitlewhite, titleIMO 2010 Problem 5 (Boxes)]\n\n\\setlength{\\parskip}{1em}\nIn each of six boxes $B_{1}, B_{2}, B_{3}, B_{4}, B_{5}, B_{6}$ there is initially one coin. There are two types of operation allowed:\n\nType 1: Choose a nonempty box $B_{j}$ with $1 \\leq j \\leq 5$. Remove one coin from $B_{j}$ and add two coins to $B_{j+1}$.\\\\\nType 2: Choose a nonempty box $B_{k}$ with $1 \\leq k \\leq 4$. Remove one coin from $B_{k}$ and exchange the contents of (possibly empty) boxes $B_{k+1}$ and $B_{k+2}$.\n\nDetermine whether there is a finite sequence of such operations that results in boxes $B_{1}, B_{2}, B_{3}, B_{4}, B_{5}$ being empty and box $B_{6}$ containing exactly $2010^{2010^{2010}}$ coins. (Note that $a^{b^{c}}a^{\\left(b^{c}\\right)}$.\n\\end{tcolorbox}",
+  "title": "main"
+}

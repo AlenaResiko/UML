@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\section{Document-summary node alignments}\n\\label{app:alignments}\n\\input{img/fig_ann}\n\nWe provide an example of the node alignments between two document sentences and a summary sentence in \\autoref{fig:alignments}.",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

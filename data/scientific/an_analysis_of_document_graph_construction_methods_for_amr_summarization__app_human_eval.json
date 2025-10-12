@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\section{Human evaluation of generated summaries}\n\\label{app:humaneval}\n\\fnote{added for EMNLP.}\n\nWe recruited five annotators with a background in NLP to perform an evaluation of the summaries generated with the three different merge strategies. Of the 33 test set documents, each was assigned two annotators. For each document, annotators were given the first ten sentences of the document text as well as the three summaries produced on that text by the different merge strategies, and asked to choose the best summary among those on each of three criteria: fluency, salience and faithfulness, specifically with respect to people mentioned in the document. The specific annotation instructions, reference example, and task layout are provided in Figures \\ref{fig:eval-instructions}, \\ref{fig:eval-example}, and \\ref{fig:eval-task}, respectively.\n\n\\begin{figure*}\n   \\centering\n   \\includegraphics[width6in]{img/summary-eval-instructions.png}\n   \\caption{Instructions for human evaluation.}\n   \\label{fig:eval-instructions}\n\\end{figure*}\n\n\\begin{figure*}\n   \\centering\n   \\includegraphics[width6in]{img/summary-eval-example.png}\n   \\includegraphics[width6in]{img/summary-eval-example-2.png}\n   \\caption{Reference example given for evaluation.}\n   \\label{fig:eval-example}\n\\end{figure*}\n\n\\begin{figure*}\n   \\centering\n   \\includegraphics[width6in]{img/summary-eval-text.png}\n   \\includegraphics[width6in]{img/summary-eval-options.png}\n   \\caption{Document and summary text placeholders and ranking prompts for evaluation.}\n   \\label{fig:eval-task}\n\\end{figure*}",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

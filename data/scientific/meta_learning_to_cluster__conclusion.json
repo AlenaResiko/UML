@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "Yibo Jiang",
+    "Nakul Verma"
+  ],
+  "date_published": "2019-10-30",
+  "raw_tex": "In this paper, we present a novel deep learning algorithm for learning to cluster. Instead of directly optimizing a specific cluster loss on a given dataset \\citep{DBLP:conf/icml/YangFSH17}, we propose to learn a meta-algorithm that can adapt to new clustering tasks. \n\nJust like the success of any transfer learning problem depends on the similarity between the training and the test tasks, the quality of our meta-clustering is also expected to depend on that. Nevertheless,\nwe show that our meta-clustering model can perform better than important clustering benchmarks when trained with simple synthetic datasets or on existing labeled datasets. \n\n \n",
+  "title": "Meta-Learning to Cluster"
+}

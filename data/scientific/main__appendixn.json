@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\\section{IMO Combinatorics Data for In-Context Learning}\n\\label{appendix:N}\n\nTable \\ref{tab:data} lists the data used for in-context learning. It consists of general notes, combinatorics notes, books, tutorials, and software documentation, along with the problems and results generated at test-time. We find that this data is critical for generating formal proofs.\n\nTo avoid contamination, all content is before the 2024 IMO, USAMO, and 2023 IMO Shortlist problems were released, except for the document ''Intro to Proofs'' \\cite{chenimo2} which we verified does not contain any data about the problems.\n\n\n\n\n\\begin{table}[htb]\n   \\centering\n   \\small\n   \\caption{Data used for in-context learning.}\n\\begin{tabular}{lllcc}\n   \\toprule\n{\\bf ID} & {\\bf Type} & {\\bf Description} & {\\bf Year} & {\\bf Pages} \\\\\n   \\midrule\n1 & General Notes & Advice for writing proofs \\cite{chenimo1} & 2023 & 11\\\\\n2 & General Notes & Intro to Proofs \\cite{chenimo2} & 2024 & 10\\\\\n3 & General Notes & Unofficial Syllabus for Math Olympiads \\cite{chenimo3} & 2023 & 3\\\\\n4 & General Notes & From the Author's Side: Thoughts on Problem Writing \\cite{chenimo4} & 2021 & 10\\\\\n5 & General Notes & Expected Uses of Probability \\cite{chenimo5} & 2014 & 18\\\\\n   \\midrule\n6 & Combinatorics Notes & Algebraic Techniques In Combinatorics \\cite{zhao2007algebraic} & 2007 & 6\\\\\n7 & Combinatorics Notes & Bijections \\cite{zhao2007bijections} & 2007 & 10\\\\\n8 & Combinatorics Notes & Combinatorics \\cite{zhao2008comb_fundamental} & 2008 & 6\\\\\n9 & Combinatorics Notes & Combinatorics - Pigeonhole Principle \\cite{zhao2007comb_pigeon} & 2007 & 12\\\\\n10 & Combinatorics Notes & Combinatorics - A Contest of Contests \\cite{zhao2007comb_advanced} & 2007 & 13\\\\\n11 & Combinatorics Notes & Counting in Two Ways \\cite{zhao2007doublecounting} & 2007 & 8\\\\\n12 & Combinatorics Notes & Tiling: Coloring and Weights \\cite{zhao2007tiling} & 2007 & 6\\\\\n   \\midrule\n13 & Book & The Art and Craft of Problem Solving \\cite{zeitz2007art} & 2007 & 383\\\\\n14 & Book & The Art of Problem Solving, Vol. 1: The Basics \\cite{lehoczky2006art1} & 2006 & 288\\\\\n15 & Book & The Art of Problem Solving, Vol. 2: And Beyond \\cite{lehoczky2006art2} & 2006 & 320\\\\\n16 & Book & Problem-Solving Strategies (Problem Books in Mathematics) \\cite{engel1997problem} & 1997 & 413 \\\\\n17 & Book & Mathematical Olympiad Challenges \\cite{andreescu2009mochallenges} & 2009 & 300\\\\\n18 & Book & Mathematical Olympiad Treasures \\cite{andreescu2012motreasures} & 2012 & 261\\\\\n19 & Book & The IMO Compendium \\cite{djukic2011imocompendium} & 2011 & 823\\\\\n20 & Book & Problems from the Book \\cite{andreescu2010problems} & 2010 & 571\\\\\n21 & Book & Straight from the Book \\cite{andreescu2012straight} & 2012 & 590\\\\\n22 & Book & Combinatorics: A Very Short Introduction \\cite{wilson2016combinatorics} & 2016 & 176\\\\\n23 & Book & Combinatorics: A Problem Oriented Approach \\cite{marcus1999comb} & 1999 & 152\\\\\n24 & Book & An Introduction to Game Theory \\cite{osborne2003game} & 2003 & 560\\\\\n25 & Book & Dynamic Programming and Optimal Control \\cite{bertsekas2012dp} & 2012 & 1270\\\\\n26 & Book & How to Prove It: A Structured Approach \\cite{velleman2006prove} & 2006 & 384\\\\\n27 & Book & Reinforcement Learning: An Introduction \\cite{sutton2018reinforcement} & 2018 & 552\\\\\n   \\midrule\n28 & Documentation & Gymnasium Documentation \\cite{gymnasium2024} & 2024 &\\\\\n   \\midrule\n29 & Problem & Definition in English & Test time &\\\\\n30 & Representation & $(S, A, R)$ & Test time&\\\\\n31 & Video & Playing games & Test time&\\\\\n   \\bottomrule\n\\end{tabular}\n\\label{tab:data}\n\\end{table}\n\n",
+  "title": "main"
+}

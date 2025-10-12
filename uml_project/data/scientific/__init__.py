@@ -1,0 +1,2 @@
+from .scientific import batch_save_texsource_jsons, batch_fetch_tex_sources_from_json
+from .arxiv_query import search_arxiv, append_arxiv_results_to_registry

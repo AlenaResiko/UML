@@ -1,0 +1,25 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Sarah Zhang",
+    "Reece Shuttleworth",
+    "Leonard Tang",
+    "Albert Lu",
+    "Elizabeth Ke",
+    "Kevin Liu",
+    "Linda Chen",
+    "Sunny Tran",
+    "Newman Cheng",
+    "Roman Wang",
+    "Nikhil Singh",
+    "Taylor L. Patti",
+    "Jayson Lynch",
+    "Avi Shporer",
+    "Nakul Verma",
+    "Eugene Wu",
+    "Gilbert Strang"
+  ],
+  "date_published": "2021-12-31",
+  "raw_tex": "\\section{Generation of MATH: Prealgebra}\n\\label{sec:generation-MATH-Prealgebra}\n\n\\begin{longtable}{|l|p{8cm}|p{8cm}|} \n\\caption{New questions generated from Prealgebra questions in the MATH dataset, and the closest question among the existing questions.}\\\\\n\\hline\n\\textbf{ID} & \\textbf{Auto-Generated question} & \\textbf{Closest question in the dataset}\\\\\n\\hline\n1 & What is the largest prime factor of $2^{10}$? & What is the largest prime factor of $3328$?\n\n\\\\\n\\hline\n2 & How many different ways can $5$ be written as the sum of positive integers? & Given three members of a group -- Alice, Bob, and Carol -- in how many ways can these three be chosen to be the three officers (president, secretary, and treasurer) of the group, assuming no person holds more than one job?\n\n\\\\\n\\hline\n3 & How many different ways can $5$ people be seated at a round table? & Robin bought a four-scoop ice cream cone having a scoop each of vanilla, chocolate, strawberry and cherry. In how many orders can the four scoops be stacked on the cone if they are stacked one on top of the other?\n\n\\\\\n\\hline\n4 & A car has a speed of $40$ miles per hour. How many miles will the car travel in $1$ hour? & At Frank's Fruit Market, 3 bananas cost as much as 2 apples, and 6 apples cost as much as 4 oranges. How many oranges cost as much as 18 bananas?\n\n\\\\ \n\\hline\n5 & The sum of the first five positive integers is $1+2+3+4+515$. What is the sum of the first ten positive integers? & What is the sum of the prime numbers between 10 and 20?\n\n\\\\\n\\hline\n6 & How many four-digit positive integers are there with hundreds digit $2$? & How many four-digit positive integers are there with thousands digit $2?$\n\n\\\\\n\\hline\n7 & The number of students who passed a test is $2$ greater than the number of students who failed. If the number of students who passed the test is $10$, how many students failed the test? & If $M   2007 \\div 3$, $N   M \\div 3$, and $X   M - N$, then what is the value of $X$?\n\n\\\\\n\\hline\n8 & A car travels $100$ miles in $2$ hours. How many miles will the car travel in $4$ hours? & At Frank's Fruit Market, 3 bananas cost as much as 2 apples, and 6 apples cost as much as 4 oranges. How many oranges cost as much as 18 bananas?\n\n\\\\\n\\hline\n9 & How many positive integers less than $100$ are divisible by $3$ but not divisible by $5$? & How many natural numbers between 150 and 300 are divisible by 9?\n\n\\\\\n\\hline\n10 & A rectangular box has a square base. The height of the box is given by $h   \\frac{1}{2}(x - 2)^2$ where $x$ is the length of a side of the base. What is the volume of the box in cubic inches? & In order for Mateen to walk a kilometer(1000m) in his rectangular backyard, he must walk the length 25 times or walk its perimeter 10 times. What is the area of Mateen's backyard in square meters?\n\\\\ \\hline\n\\end{longtable}",
+  "title": "A Neural Network Solves, Explains, and Generates University Math Problems by Program Synthesis and Few-Shot Learning at Human Level"
+}

@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\n --- inline annotations\n\n\\newcommand{\\red}[1]{{\\color{red}#1}}\n\\newcommand{\\todo}[1]{{\\color{red}#1}}\n\\newcommand{\\TODO}[1]{\\textbf{\\color{red}[TODO: #1]}}\n --- disable by uncommenting   \n \\renewcommand{\\TODO}[1]{}\n \\renewcommand{\\todo}[1]{#1}\n\n",
+  "title": "main"
+}

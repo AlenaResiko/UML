@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\section{Combined Merge Pseudo-code}\n\\label{app:person}\nWe present pseudocode for the full combined merging strategy in Algorithm \\ref{alg:merge}.\n\n\\input{alg_person_merge.tex}",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

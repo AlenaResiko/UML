@@ -1,0 +1,25 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Sarah Zhang",
+    "Reece Shuttleworth",
+    "Leonard Tang",
+    "Albert Lu",
+    "Elizabeth Ke",
+    "Kevin Liu",
+    "Linda Chen",
+    "Sunny Tran",
+    "Newman Cheng",
+    "Roman Wang",
+    "Nikhil Singh",
+    "Taylor L. Patti",
+    "Jayson Lynch",
+    "Avi Shporer",
+    "Nakul Verma",
+    "Eugene Wu",
+    "Gilbert Strang"
+  ],
+  "date_published": "2021-12-31",
+  "raw_tex": "\\section{Generation of MATH: Intermediate Algebra}\n\\label{sec:generation-MATH-Intermediate-Algebra}\n\n\\begin{longtable}{|l|p{8cm}|p{8cm}|}\n\\caption{New questions generated from Intermediate Algebra questions in the MATH dataset, and the closest question among the existing questions.}\\\\\n\\hline\n\\textbf{ID} & \\textbf{Auto-Generated question} & \\textbf{Closest question in the dataset}\\\\\n\\hline\n1 & Let $f(x)$ be a cubic polynomial such that $f(0)   1$ and $f(1)   2.$ Find the value of $f(2).$& \nFind all positive real numbers $x$ that satisfy \\[x \\sqrt{12 - x} + \\sqrt{12x - x^3} \\ge 12.\\]Enter all solutions, separated by commas.\n\\\\\n\\hline\n2 & Let $f(x)$ be a cubic polynomial such that $f(0)   0$ and $f(1)   1.$ Find all possible values of $f(0.5).$& \nFind all positive real numbers $x$ that satisfy \\[x \\sqrt{12 - x} + \\sqrt{12x - x^3} \\ge 12.\\]Enter all solutions, separated by commas.\n\\\\\n\\hline\n3 & Let $x$ and $y$ be positive real numbers such that $x^2 + y^2   1.$ Find the maximum value of $xy.$&\nGiven that $x^2 + y^2   14x + 6y + 6,$ find the largest possible value of $3x + 4y.$\n\\\\\n\\hline\n4 & Let $f(x)   x^2 + ax + b$ be a polynomial with real coefficients such that $f(1)   1$ and $f(2)   4$. Find $f(3).$& \nLet $r$ and $s$ denote the two real roots of $x^2 - x \\sqrt{5} + 1   0.$ Then determine $r^8 + s^8.$\n\\\\ \n\\hline\n5 & Let $f(x)   x^2 + ax + b$ be a polynomial with real coefficients such that $f(0)   0$ and $f(1)   1.$ Find the value of $a^2 + b^2.$& \nLet $r$ and $s$ denote the two real roots of $x^2 - x \\sqrt{5} + 1   0.$ Then determine $r^8 + s^8.$\n\\\\\n\\hline\n6 & Let $f(x)   x^2 - x - 1$ and $g(x)   x^2 - x + 1.$ Find the sum of the two roots of $f$ and the sum of the two roots of $g$.&\nLet $r$ and $s$ denote the two real roots of $x^2 - x \\sqrt{5} + 1   0.$ Then determine $r^8 + s^8.$\n\\\\\n\\hline\n7 & Let $x$ and $y$ be positive real numbers such that $x^2 + y^2   1.$ Find the maximum value of $x^2y^2.$& \nGiven that $x^2 + y^2   14x + 6y + 6,$ find the largest possible value of $3x + 4y.$\n\\\\\n\\hline\n8 & Let $f(x)   x^2 - x - 1$ and $g(x)   x^2 + x - 1$ be two polynomials with real coefficients. Let $h(x)   f(x)g(x) - g(x)f(x).$ Find the degree of $h.$ & \nLet $r$ and $s$ denote the two real roots of $x^2 - x \\sqrt{5} + 1   0.$ Then determine $r^8 + s^8.$\n\\\\\n\\hline\n9 & Let $f(x)   x^2 + ax + b$ be a polynomial with real coefficients such that $f(0)   0$ and $f(1)   1.$ Find the value of $a$ if the graph of $f$ intersects the line $y   x$ at $x   0.$ & \nLet $r$ and $s$ denote the two real roots of $x^2 - x \\sqrt{5} + 1   0.$ Then determine $r^8 + s^8.$\n\\\\\n\\hline\n10 & Let $x$ and $y$ be positive real numbers. Find the maximum value of $xy^2 + xy$ if $x^2 + y^2   1.$ & \nGiven that $x^2 + y^2   14x + 6y + 6,$ find the largest possible value of $3x + 4y.$\n\\\\\n\\hline\n\\end{longtable}",
+  "title": "A Neural Network Solves, Explains, and Generates University Math Problems by Program Synthesis and Few-Shot Learning at Human Level"
+}

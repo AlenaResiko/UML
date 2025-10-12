@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\section{Conclusion}\nIn this paper, we have presented a new annotated dataset of node alignments between document-summary AMR pairs that can be used to evaluate two fundamental components of the AMR-based summarization pipeline: document graph construction via node merging, and node-level content selection over the constructed document graph. Drawing on insights from error analysis of prior work when evaluated against our annotations, we developed a new method for node merging that combines co-reference with concept merging. We show that our novel method significantly outperforms prior work using concept merging alone when evaluated against our gold labels in both the node merging and node selection steps, and analyze the causes of error that our method addresses.\n\nThe most obvious direction for future work would be to focus on the generation component.\nAnother extension would be to use the interpretability our dataset affords to investigate the use of intermediate AMR representations for controllability in neural summarization. All in all, our work lays the foundation for a fine-grained understanding of content selection dynamics in AMR summarization.",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

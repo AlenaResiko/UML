@@ -30,11 +30,12 @@ def _extract_title_from_tex(tex: str) -> str | None:
     return title
 
 
-import re
-import io
-import tarfile
-import requests
 import html
+import io
+import re
+import tarfile
+
+import requests
 
 # ------------------------
 # TeX source fetching (arXiv)

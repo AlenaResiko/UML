@@ -1,19 +1,21 @@
 from __future__ import annotations
-import re
-from .constants import *
+
 import json
+import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+
 from uml_project.data.utils.latex_helpers import (
-    _resolve_arxiv_id_and_version,
     _download_arxiv_source,
     _extract_tex_from_tar,
-    _guess_main_tex,
-    _fetch_arxiv_metadata_safe,
-    _slugify_title,
     _extract_title_from_tex,
+    _fetch_arxiv_metadata_safe,
+    _guess_main_tex,
+    _resolve_arxiv_id_and_version,
+    _slugify_title,
 )
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from .constants import *
 
 
 def batch_fetch_tex_sources_from_json(json_file: str | Path | None = None, max_workers: int = 8, timeout: int = 60):

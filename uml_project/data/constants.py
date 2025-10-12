@@ -1,6 +1,6 @@
 import os
-from pathlib import Path
 import typing as t
+from pathlib import Path
 
 # PATHS
 ROOT_DIR = Path(os.environ.get("DATA_DIR") or Path(__file__).parent.parent.parent).resolve() / "data"

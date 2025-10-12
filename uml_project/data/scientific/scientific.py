@@ -5,7 +5,8 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from uml_project.data.utils.latex_helpers import (
+from uml_project.data.constants import *
+from uml_project.data.scientific.latex_helpers import (
     _download_arxiv_source,
     _extract_tex_from_tar,
     _extract_title_from_tex,
@@ -15,8 +16,6 @@ from uml_project.data.utils.latex_helpers import (
     _slugify_title,
 )
 
-from .constants import *
-
 
 def batch_fetch_tex_sources_from_json(json_file: str | Path | None = None, max_workers: int = 8, timeout: int = 60):
     """
@@ -25,8 +24,8 @@ def batch_fetch_tex_sources_from_json(json_file: str | Path | None = None, max_w
     JSON formats supported:
       - List of URLs:
             ["https://arxiv.org/abs/2503.19280", ...]
-      - Object with key 'urls':
-            {"urls": ["https://arxiv.org/abs/2503.19280", ...]}
+      - Object with key 'arxiv':
+            {"arxiv": ["https://arxiv.org/abs/2503.19280", ...]}
       - Mapping of name->URL:
             {"logic_learner": "https://arxiv.org/abs/2503.19280"}
 
@@ -54,14 +53,14 @@ def batch_fetch_tex_sources_from_json(json_file: str | Path | None = None, max_w
     if isinstance(payload, list):
         pairs = [(url, url) for url in payload]
     elif isinstance(payload, dict):
-        if "urls" in payload and isinstance(payload["urls"], list):
-            pairs = [(url, url) for url in payload["urls"]]
+        if "arxiv" in payload and isinstance(payload["arxiv"], list):
+            pairs = [(url, url) for url in payload["arxiv"]]
         else:
             pairs = [(k, v) for k, v in payload.items()]
     else:
         raise ValueError("Unsupported JSON structure; expected list or dict of URLs.")
 
-    results: dict[str, TexSource] = {}
+    results: dict[str, TexSourceDict] = {}
 
     def _worker(name, url):
         try:
@@ -69,7 +68,9 @@ def batch_fetch_tex_sources_from_json(json_file: str | Path | None = None, max_w
             key = src.get("id") or name or url
             return key, src
         except Exception as e:
-            return name or url, TexSource({"id": f"{type(e).__name__}: {e}", "files": [], "main": None, "title": None})
+            return name or url, TexSourceDict(
+                {"id": f"{type(e).__name__}: {e}", "files": [], "main": None, "title": None}
+            )
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [executor.submit(_worker, name, url) for name, url in pairs]
@@ -126,11 +127,11 @@ def fetch_tex_sources(url: str, timeout: int = 60):
         files.append({"name": name, "text": text})
     # Title selection: prefer tex_title, then meta_title, else None
     title = tex_title or meta_title or None
-    return TexSource(id=f"{arx_id}{ver or ''}", files=files, main=main, title=title)
+    return TexSourceDict(id=f"{arx_id}{ver or ''}", files=files, main=main, title=title)
 
 
 def batch_save_texsource_jsons(
-    texsrc_list: dict[str, TexSource], out_dir: Path | None = None, timeout: int = 30
+    texsrc_list: dict[str, TexSourceDict], out_dir: Path | None = None, timeout: int = 30
 ) -> dict[str, list[str]]:
     """
     Save multiple TexSource dicts to JSON files using `save_texsource_jsons`.
@@ -167,7 +168,7 @@ def batch_save_texsource_jsons(
     return results
 
 
-def save_texsource_jsons(texsrc: TexSource, out_dir: Path | None = None, timeout: int = 30) -> list[str]:
+def save_texsource_jsons(texsrc: TexSourceDict, out_dir: Path | None = None, timeout: int = 30) -> list[str]:
     """
     Save one JSON per TeX document in `texsrc["files"]` to SCIENTIC_DIR by default.
 

@@ -9,6 +9,7 @@ SCRATCH_DIR = ROOT_DIR / "scratch/"  # for temporary files
 SCIENTIFIC_DIR = ROOT_DIR / "scientific/"
 SCIENTIFIC_REGISTRY = SCIENTIFIC_DIR / "REGISTRY.json"  # JSON file with list of paper URLs
 HF_DIR = ROOT_DIR / "huggingface/"  # for HuggingFace datasets/models
+HF_REGISTRY = HF_DIR / "REGISTRY.json"  # JSON file with list of datasets/models
 
 # KAGGLE
 TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"

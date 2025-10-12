@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Alexandre Louis Lamy",
+    "Ziyuan Zhong",
+    "Aditya Krishna Menon",
+    "Nakul Verma"
+  ],
+  "date_published": "2019-01-30",
+  "raw_tex": "auto-ignore\n\\subsection{Further notation}\n\nWe denote the conditional probabilities by:\n\\begin{align*}\n\\eta_y(x)&:\\mathbb{P}[Y1|Xx]\\\\\n\\eta_a(x)&:\\mathbb{P}[A1|Xx]\n\\end{align*}\n\nAnd we use the following abbreviations for simplicity:\n\\begin{align*}\n   \\mathbb{P}_{D}&:\\mathbb{P}_{(x,a,y)\\sim D}\\\\\n   \\mathbb{P}^+_D(f) &: \\mathbb{P}_{D}[\\sign(f(x))1]\\\\\n   \\mathbb{P}^-_D(f) &: \\mathbb{P}_{D}[\\sign(f(x))0]\n\\end{align*}\n\nFinally we denote the base rates by:\n\\begin{align*}\n\\pi_{\\cdot,y}&:\\mathbb{P}[Y1]\\\\\n\\pi_{a,\\cdot}&:\\mathbb{P}[A1]\\\\\n\\pi_{a,y}&:\\mathbb{P}[A1,Y1]\n\\end{align*}\n",
+  "title": "Noise-tolerant fair classification"
+}

@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\\section{Diversity Performance Curve}\n\\label{appendix:X}\n\n\\begin{figure}[h]\n   \\centering\n   \\includegraphics[width0.5\\linewidth]{diversity_scaling_curves2.png}\n   \\caption{The relationship between coverage on ARC tasks and the number of models or methods, without o3, are added in order of descending coverage. The horizontal axis shows the number of models or methods added, and the vertical axis indicates how many ARC tasks have been solved by at least one model.}\n   \\label{fig:diversity-scaling-curve}\n\\end{figure}\n\n",
+  "title": "main"
+}

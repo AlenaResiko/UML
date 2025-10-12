@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "Yibo Jiang",
+    "Nakul Verma"
+  ],
+  "date_published": "2019-10-30",
+  "raw_tex": "Clustering is one of the most fundamental and wide-spread techniques in exploratory data analysis. Yet, the basic approach to clustering has not really changed: a practitioner hand-picks a task-specific clustering loss to optimize and fit the given data to reveal the underlying cluster structure. Some types of losses---such as $k$-means, or its non-linear version: kernelized $k$-means (centroid based), and DBSCAN (density based)---are popular choices due to their good empirical performance on a range of applications. Although every so often the clustering output using these standard losses fails to reveal the underlying structure, and the practitioner has to custom-design their own variation. In this work we take an intrinsically different approach to clustering: rather than fitting a dataset to a specific clustering loss, we train a recurrent model that \\emph{learns} how to cluster. The model uses as training pairs examples of datasets (as input) and its corresponding cluster identities (as output). Each datapoint (from each example dataset) and its corresponding label is fed sequentially to the model for maximum flexibility.\nBy providing multiple types of training datasets as inputs, our model has the ability to generalize well on unseen datasets (new clustering tasks).\nOur experiments reveal that by training on simple synthetically generated datasets or on existing real datasets, we can achieve better clustering performance on unseen real-world datasets when compared with standard benchmark clustering techniques. Our meta clustering model works well even for small datasets where the usual deep learning models tend to perform worse.",
+  "title": "Meta-Learning to Cluster"
+}

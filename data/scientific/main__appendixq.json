@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\\section{ARC Diverse Model and Method Success on Failure Cases of 948 Humans}\n\\label{appendix:Q}\n\n\\begin{table*}[htb]\n   \\centering\n   \\tiny\n\\caption{Ablation experiments on difficult ARC problems on which 948 humans fail on. We show results using different methods and models. For each method and model we report if the answer is correct by \\C, and \\X otherwise.}\n\\begin{tabular}{l|ccccccccccccccccc}\n\\toprule\n\\textbf{Task ID} & \n\\textbf{max} &\n\\textbf{g1.5} &\n\\textbf{g2.0} &\n\\textbf{c3.5-ha} &\n\\textbf{c3-ha} &\n\\textbf{c-son} &\n\\textbf{dsv3} &\n\\textbf{dsr1} &\n\\textbf{o1-prev} &\n\\textbf{o1mini} &\n\\textbf{o1low} &\n\\textbf{o1med} &\n\\textbf{o1high} &\n\\textbf{o3low} &\n\\textbf{o3high} &\n\\textbf{BARC} &\n\\textbf{MARC} \\\\\n\\midrule\n31d5ba1a   & \\C & \\X & \\X & \\X & \\X & \\X & \\X & \\C & \\C & \\C & \\C & \\C & \\C & \\C & \\C & \\C & \\C\\\\\n79fb03f4   & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X\\\\\n8719f442   & \\C & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\C & \\C & \\X & \\X\\\\\na8610ef7   & \\C & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\C & \\C & \\X\\\\\nb4a43f3b   & \\C & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\X & \\C & \\C & \\X & \\X\\\\\n\\bottomrule\n\\end{tabular}\n\\label{tab:ARCo3fails}\n\\vspace{-10pt}\n\\end{table*}\n\n\n\\begin{figure}[H]\n   \\centering\n   \\includegraphics[width0.3\\linewidth]{31d5ba1a.png}\n   \\label{fig:ARCeval}\n   \\caption{ARC task 31d5ba1a on which 948 humans fail and a model or method succeeds.}\n\\end{figure}\n\n\\begin{figure}[H]\n   \\centering\n   \\includegraphics[width0.5\\linewidth]{8719f442.png}\n   \\label{fig:ARCeval}\n   \\caption{ARC task 8719f442 on which 948 humans fail and a model or method succeeds.}\n\\end{figure}\n\n\\begin{figure}[H]\n   \\centering\n   \\includegraphics[width0.3\\linewidth]{a8610ef7.png}\n   \\label{fig:ARCeval}\n   \\caption{ARC task a8610ef7 on which 948 humans fail and a model or method succeeds.}\n\\end{figure}\n\n\\begin{figure}[H]\n   \\centering\n   \\includegraphics[width0.7\\linewidth]{b4a43f3b.png}\n   \\label{fig:ARCeval}\n   \\caption{ARC task b4a43f3b on which 948 humans fail and a model or method succeeds.}\n\\end{figure}\n\n\\begin{figure}[H]\n   \\centering\n   \\includegraphics[width0.9\\linewidth]{79fb03f4.png}\n   \\label{fig:ARCeval}\n   \\caption{ARC task 79fb03f4 on which 948 humans fail and models or methods fail.}\n\\end{figure}\n\n\n",
+  "title": "main"
+}

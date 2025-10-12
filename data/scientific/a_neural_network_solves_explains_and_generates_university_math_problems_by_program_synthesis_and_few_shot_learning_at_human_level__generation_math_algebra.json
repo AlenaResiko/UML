@@ -1,0 +1,25 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Sarah Zhang",
+    "Reece Shuttleworth",
+    "Leonard Tang",
+    "Albert Lu",
+    "Elizabeth Ke",
+    "Kevin Liu",
+    "Linda Chen",
+    "Sunny Tran",
+    "Newman Cheng",
+    "Roman Wang",
+    "Nikhil Singh",
+    "Taylor L. Patti",
+    "Jayson Lynch",
+    "Avi Shporer",
+    "Nakul Verma",
+    "Eugene Wu",
+    "Gilbert Strang"
+  ],
+  "date_published": "2021-12-31",
+  "raw_tex": "\\section{Generation of MATH: Algebra}\n\\label{sec:generation-MATH-Algebra}\n\n\\begin{longtable}{|l|p{8cm}|p{8cm}|}\n\\caption{New questions generated from MATH Algebra questions, and the closest question among the existing questions.}\\\\\n\\hline\n\\textbf{ID} & \\textbf{Auto-Generated question} & \\textbf{Closest question in the dataset}\\\\\n\\hline\n1 & If $f(x)   \\dfrac{x^2-1}{x^2+1}$, what is $f(f(x))$? & \nIf $f(x)\\dfrac{5x+1}{x-1}$, find the value of $f(7)$.\n\\\\\n\\hline\n2 & If $f(x)   \\dfrac{x^2-1}{x^2+1}$, find $f(1)$.& \nIf $f(x)\\dfrac{5x+1}{x-1}$, find the value of $f(7)$.\n\\\\\n\\hline\n3 & If $f(1)7$, $f(2)12$ and $f(x)ax+bx+2$, what is the value of $f(3)$? &\nIf $f(1)5$, $f(2)8$ and $f(x)ax+bx+2$, what is the value of $f(3)$?\n\\\\\n\\hline\n4 & Find the distance between the points $(3,4)$ and $(0,0)$.& \nFind the distance between the points $(0,4)$ and $(3,0)$.\n\\\\ \n\\hline\n5 & A rectangle with a perimeter of $24$ has a diagonal of length $8$. What is the area of the rectangle?& \nThe sum of two numbers is $12$ and their difference is $20$. What is the smaller number?\n\\\\\n\\hline\n6 & The graph of $yf(x)$ is a straight line that passes through the points $(1,1)$ and $(2,2)$. What is the value of $f(2)$?&\nWhat is the $x$-intercept of the line perpendicular to the line defined by $3x-2y   6$ and whose $y$-intercept is 2?\n\\\\\n\\hline\n7 & If $f(x)   \\dfrac{x^2-x}{x^2+x}$, what is $f(2)$?& \nIf $f(x)\\dfrac{5x+1}{x-1}$, find the value of $f(7)$.\n\\\\\n\\hline\n8 & If $f(x)   \\frac{x^2 - 1}{x^2 + 1}$, what is $f(-1)$? & \nIf $f(x)\\dfrac{5x+1}{x-1}$, find the value of $f(7)$.\n\\\\\n\\hline\n9 & Find the sum of the first $10$ terms of the geometric progression whose first term is $1$ and whose ratio is $2$. & \nWhat is the sum of the even, positive integers less than 62?\n\\\\\n\\hline\n10 & Find the distance between the points $(0,0)$ and $(3,4)$. & \nFind the distance between the points $(0,4)$ and $(3,0)$.\n\\\\\n\\hline\n\\end{longtable}",
+  "title": "A Neural Network Solves, Explains, and Generates University Math Problems by Program Synthesis and Few-Shot Learning at Human Level"
+}

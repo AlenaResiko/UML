@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\\section{HLE Performance by Method, Question Category and Type}\n\\label{appendix:U}\n\n\\begin{table}[ht]\n\\centering\n\\tiny\n\\caption{Summary of the performance of different methods by category. The number of questions by type and category. Best-of-N (BoN) with $N   3$, and Self-Consistency (SC) with $N   5$. MV denotes majority vote which does not perform well as an aggregation method in this case.}\n\\begin{tabular}{llccccccccc}\n\\toprule\n\\textbf{Category (\\#)} &\n\\textbf{Best Method (\\#)} &\n\\textbf{MV (\\)} &\n\\textbf{Z3 (\\)} &\n\\textbf{BoN (\\)} &\n\\textbf{LEAP (\\)} &\n\\textbf{RTO (\\)} &\n\\textbf{SC (\\)} &\n\\textbf{MoA (\\)} &\n\\textbf{MCTS (\\)} &\n\\textbf{PVG} (\\) \\\\\n\\midrule\n\nBiology (21) & BoN (4) & 1 (4.76) & 1 (4.76) & 4 (19.05) & 2 (9.52) & 1 (4.76) & 2 (9.52) & 2 (9.52) & 2 (9.52) & 2 (9.52) \\\\\n\nMath (27) & BoN (7) & 5 (18.52) & 5 (18.52) & 8 (29.63) & 6 (22.22) & 4 (14.81) & 2 (7.41) & 4 (14.81) & 2 (7.41) & 2 (7.41) \\\\\n\nCS/AI (14) & BoN (2) & 0 (0.00) & 0 (0.00) & 2 (14.29) & 1 (7.14) & 0 (0.00) & 2 (14.29) & 1 (7.14) & 1 (7.14) & 0 (0.00) \\\\\n\nChemistry (6) & BoN (1) & 0 (0.00) & 0 (0.00) & 1 (16.67) & 0 (0.00) & 1 (16.67) & 1 (16.67) & 0 (0.00) & 0 (0.00) & 0 (0.00) \\\\\n\nPhysics (8) & BoN (2) & 1 (12.50) & 1 (12.50) & 2 (25.00) & 2 (25.00) & 0 (0.00) & 2 (25.00) & 2 (25.00) & 1 (12.50) & 0 (0.00) \\\\\n\nHumanities (12) & LEAP/RTO (3) & 2 (16.67) & 2 (16.67) & 2 (16.67) & 3 (25.00) & 3 (25.00) & 2 (16.67) & 0 (0.00) & 1 (8.33) & 0 (0.00) \\\\\n\nEngineering (3) & LEAP/MCTS (1) & 0 (0.00) & 0 (0.00) & 0 (0.00) & 1 (33.33) & 0 (0.00) & 0 (0.00) & 0 (0.00) & 1 (33.33) & 0 (0.00) \\\\\n\nOther (9) & LEAP (3) & 1 (11.11) & 1 (11.11) & 2 (22.22) & 3 (33.33) & 1 (11.11) & 1 (11.11) & 1 (11.11) & 2 (22.22) & 0 (0.00) \\\\\n\n\\midrule\nCorrect & 23 & 10 & 10 & 21 & 18 & 10 & 12 & 10 & 10 & 4 \\\\\n\\bottomrule\n\\end{tabular}\n\\label{tab:category-method}\n\\end{table}\n\n\n\n\\begin{table}[ht]\n\\small\n   \\centering\n   \\small\n   \\caption{The number of questions and correct answers by type and category.}\n   \\begin{tabular}{lccc}\n   \\toprule\n   \\textbf{Best-of-N $(N3)$} & \\textbf{\\# Questions} & \\textbf{\\# Correct o3-mini (high)} & \\textbf{\\# Correct o1} \\\\ \n   \\midrule\n   Number of multiple choice questions   & 70 & 30 & 15 \\\\\n   Number of exact match questions   & 30 & 7 &   6 \\\\\n   Number of Math questions   & 27 & 9 &   8 \\\\\n   Number of multiple choice math questions & 13 & 6 &   4 \\\\\n   \\bottomrule\n   \\end{tabular}\n   \\label{tab:questions_and_solves}\n\\end{table}",
+  "title": "main"
+}

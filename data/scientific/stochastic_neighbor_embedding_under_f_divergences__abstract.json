@@ -1,0 +1,10 @@
+{
+  "authors": [
+    "Daniel Jiwoong Im",
+    "Nakul Verma",
+    "Kristin Branson"
+  ],
+  "date_published": "2018-11-03",
+  "raw_tex": "The $t$-distributed Stochastic Neighbor Embedding ($t$-SNE) is a powerful and\npopular method for visualizing high-dimensional data. It minimizes the\nKullback-Leibler (KL) divergence between the original and embedded data\ndistributions. In this work, we propose extending this method to other\n$f$-divergences. We analytically and empirically evaluate the types of latent\nstructure---manifold, cluster, and hierarchical---that are well-captured\nusing both the original KL-divergence as well as the proposed $f$-divergence generalization, \nand find that different divergences perform better for different types of\nstructure.\n\nA common concern with $t$-SNE criterion is that it is optimized using gradient descent, and can\nbecome stuck in poor local minima. We propose optimizing the $f$-divergence based loss \ncriteria by minimizing a variational bound. This typically\nperforms better than optimizing the primal form, and our experiments show that\nit can improve upon the embedding results obtained from the original $t$-SNE\ncriterion as well. \n",
+  "title": "Stochastic Neighbor Embedding under $f$-divergences"
+}

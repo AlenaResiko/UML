@@ -1,0 +1,25 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Sarah Zhang",
+    "Reece Shuttleworth",
+    "Leonard Tang",
+    "Albert Lu",
+    "Elizabeth Ke",
+    "Kevin Liu",
+    "Linda Chen",
+    "Sunny Tran",
+    "Newman Cheng",
+    "Roman Wang",
+    "Nikhil Singh",
+    "Taylor L. Patti",
+    "Jayson Lynch",
+    "Avi Shporer",
+    "Nakul Verma",
+    "Eugene Wu",
+    "Gilbert Strang"
+  ],
+  "date_published": "2021-12-31",
+  "raw_tex": "\\section{Generation of MATH: Number Theory}\n\\label{sec:generation-MATH-Number-Theory}\n\n\\begin{longtable}{|l|p{8cm}|p{8cm}|}\n\\caption{New questions generated from Number Theory questions in the MATH dataset, and the closest question among the existing questions.}\\\\\n\\hline\n\\textbf{ID} & \\textbf{Auto-Generated question} & \\textbf{Closest question in the dataset}\\\\\n\\hline\n1 & Find the smallest positive integer $n$ such that $n^2$ is a palindrome.& \nWhat is the smallest whole number $b$ such that 62 can be expressed in base $b$ using only three digits?\n\\\\\n\\hline\n2 & What is the base-10 representation of the base-8 number $1234_{8}$?& \nWhat is the base-ten number represented by the base-eight number 31?\n\\\\\n\\hline\n3 & Find the smallest positive integer $n$ such that $n^2$ is divisible by $2^{10}$ and $n^3$ is divisible by $3^{10}$.&\nHow many four-digit numbers whose digits add up to $9$ are divisible by $11$?\n\\\\\n\\hline\n4 & Find the smallest positive integer $n$ such that $n^2$ is a palindrome in base $10$ and in base $2$.& \nExpress the product of $1001_2$ and $121_3$ in base 10.\n\\\\ \n\\hline\n5 & Find the smallest prime divisor of $2^{16} + 1$. & Write a program that finds the number of positive divisors of 2002.\n\\\\\n\\hline\n6 & Find the smallest positive integer $n$ such that $n^2 \\equiv 2 \\pmod{10}$ and $n^2 \\equiv 3 \\pmod{14}$.&\nFind $2^{-1} \\pmod{185}$, as a residue modulo 185. (Give an answer between 0 and 184, inclusive.)\n\\\\\n\\hline\n7 & Find the smallest prime number that is divisible by $7$ and $13$.& \nHow many four-digit numbers whose digits add up to $9$ are divisible by $11$?\n\\\\\n\\hline\n8 & Find the smallest integer $n$ such that $n^2 + n + 1$ is a perfect square. & \nWhat is the smallest whole number $b$ such that 62 can be expressed in base $b$ using only three digits?\n\\\\\n\\hline\n9 & What is the smallest whole number $b$ such that 89 can be expressed in base $b$ using only three digits? & \nWhat is the smallest whole number $b$ such that 62 can be expressed in base $b$ using only three digits?\n\\\\\n\\hline\n10 & Find the smallest positive integer $n$ such that $n^2+1$ is a palindrome. & \nWhat is the smallest whole number $b$ such that 62 can be expressed in base $b$ using only three digits?\n\\\\\n\\hline\n\\end{longtable}",
+  "title": "A Neural Network Solves, Explains, and Generates University Math Problems by Program Synthesis and Few-Shot Learning at Human Level"
+}

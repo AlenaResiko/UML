@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Alexandre Louis Lamy",
+    "Ziyuan Zhong",
+    "Aditya Krishna Menon",
+    "Nakul Verma"
+  ],
+  "date_published": "2019-01-30",
+  "raw_tex": "auto-ignore\nIn this paper, we showed both theoretically and empirically that even under the very general MC learning noise model~\\citep{Scott13} on the sensitive feature, fairness can still be preserved by scaling the input unfairness tolerance parameter $\\tau$.\n Our method can be applied before any downstream classifiers (that takes in a parameter $\\tau$ that is proportional to mean-difference score of some fairness measures).\n We also provide applications in PU-learning and privacy preservation.\nIn future work, it would be interesting to consider the case of categorical sensitive attributes (as applicable, e.g., for race),\nand the more challenging case of instance-dependent noise~\\citep{Awasthi:2015}.\n Further, considering the case of handling noisy $A$ when the latter is used as input to the classifier would also be of interest.\n\\AKMEDIT{We remark also that in independent work,~\\citet{Awasthi:2019} studied the effect of sensitive attribute noise on the post-processing method of~\\citet{Hardt2016}.\nIn particular, they \nidentified conditions when such post-processing can still yield an approximately fair classifier.\nOur approach has an advantage of being applicable to a generic in-processing fair classifier;\nhowever, their approach also handles the case where the sensitive feature is used as an input to the classifier.\nExploration of the synthesis of the two approaches is another promising direction for future work.\n}\n",
+  "title": "Noise-tolerant fair classification"
+}

@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Gaston Longhitano",
+    "Mao Mao",
+    "Seunghwan Hyun",
+    "Yuke Zhang",
+    "Sungjun Park",
+    "Zachary Meeks",
+    "Xin-Yu Zhang",
+    "Ben Segev",
+    "Howard Yong",
+    "Nakul Verma",
+    "Avi Shporer",
+    "Alon Amit",
+    "Madeleine Udell"
+  ],
+  "date_published": "2025-02-14",
+  "raw_tex": "\\section{Overview}\n\\label{appendix:A}\n\n\\subsection*{IMO}\n\nAppendix \\ref{appendix:B} lists 2024 IMO, USAMO, and 2023 IMO Shortlist problems, their answers, and ground truth solutions \\cite{imo2024problems_and_solutions}\\cite{usamo2024problems_and_solutions}\\cite{imo2023_shortlist_problems_and_solutions}. Appendicies \\ref{appendix:C}, \\ref{appendix:D} and \\ref{appendix:E} present our ablation results for the answers of 2024 IMO, USAMO and 2023 IMO Shorlist problems using different models and a dozen approaches. Appendix \\ref{appendix:F} describes the combinatorics problems encoding to state and action spaces, and rewards, and Appendix \\ref{appendix:G} shows the visual game representation of the problems. Appendix \\ref{appendix:H} provides the generated code of the corresponding games along with images and descriptions. Appendix \\ref{appendix:I} shows the agent architecture to prove the combinatorics problems. Appendix \\ref{appendix:J} shows autoformalized Lean Theorems of each combinatorics problem, followed by a natural languge proof in Appendix \\ref{appendix:K}. In appendix \\ref{appendix:L}, we present limitations to solving combinatorics problems. Appendix \\ref{appendix:M} lists prompts and meta-prompts, and Appendix \\ref{appendix:N} lists the data used for in-context learning in encoding problems and decoding solutions. Appendix \\ref{appendix:Y} describes our approach for generating new IMO problems and solutions.\n\n\\subsection*{ARC}\nAppendix \\ref{appendix:O} shows the agent architecture. Appendices \\ref{appendix:P} and \\ref{appendix:Q} show tasks where diverse models and methods succeed however o3 and humans fail, respectively. Appendix \\ref{appendix:R} shows diverse models and methods performance for 400 ARC puzzles, including model knowledge cutoff dates. Appendix \\ref{appendix:X} plots a diversity performance curve, showing the relationship between adding models and methods and solving ARC tasks.\n\n\\subsection*{HLE}\nAppendix \\ref{appendix:S} shows a sample of HLE questions and answer and the performance of best-of-N sampling as N increases. Appendix \\ref{appendix:T} shows an extensive evaluation for 100 randomly sampled questions across eight different methods. Appendix \\ref{appendix:U} shows the ablation results of diverse methods by question category and type. Appendix \\ref{appendix:V} lists hard math problems from the HLE.\n",
+  "title": "main"
+}

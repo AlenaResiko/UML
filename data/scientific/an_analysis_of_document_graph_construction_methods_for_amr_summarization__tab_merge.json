@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\begin{table*}[t]\n   \\centering\n   \\resizebox{0.49\\textwidth}{!}{\n   \\begin{tabular}{cc c cc c c}\n   \\toprule\n   & \\multicolumn{3}{c}{$B^3$} & \\multicolumn{3}{c}{LEA}\\\\\n   \\cmidrule(lr){2-4}\\cmidrule(lr){5-7}\n   \n   Method & Prec. & Recall & F1 & Prec. & Recall & F1 \\\\ \\midrule\n   Person & 0.011 & 0.023 & 0.015 & 0.052 & 0.144 & 0.074 \\\\\n   Concept*$\\dagger$ & 0.469 & 0.514 & 0.490 & \\textbf{0.088} & 0.191 & 0.115 \\\\\n   Combined*$\\dagger$ & \\textbf{0.743} & \\textbf{0.704} & \\textbf{0.723} & 0.086 & \\textbf{0.241} & \\textbf{0.122} \\\\ \\bottomrule\n   \\end{tabular}}\n   \\caption{Precision, recall, and F1 for the $B^3$ and LEA metrics for person merging, concept merging~\\citep{liu-etal-2015-toward-abstractive}, and our full approach (combined merge). Methods are marked with   (*) if the $B^3$ F-score is statistically significant over that of the row directly above, and with ($\\dagger$) if the LEA F-score is significant over the row above.}\n   \\label{tab:merge_scores}\n\\end{table*}",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

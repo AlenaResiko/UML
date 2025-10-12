@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Alexandre Louis Lamy",
+    "Ziyuan Zhong",
+    "Aditya Krishna Menon",
+    "Nakul Verma"
+  ],
+  "date_published": "2019-01-30",
+  "raw_tex": "auto-ignore\nFair machine learning concerns the analysis and design of learning algorithms that do not exhibit systematic bias with respect to some sensitive feature (e.g., race, gender).\nThis subject\n Fair machine learning has received sustained interest in the past few years, with\n seen considerable progress on both devising sensible measures of fairness, and means of achieving them.\n Typically, the latter\nFairness-aware learning involves designing algorithms that do not discriminate with respect to some sensitive feature (e.g., race or gender). \nExisting work on the problem operates under the assumption that the sensitive feature available in one's training sample is perfectly reliable.\nThis assumption may be violated in many real-world cases:\nfor example, respondents to a survey may choose to conceal or obfuscate their group identity out of fear of potential discrimination. \nThis poses the question of whether one can still learn fair classifiers given \\emph{noisy} sensitive features.\nIn this paper, we answer the question in the affirmative:\nwe show that if one measures fairness using the \\emph{mean-difference score},\nand sensitive features are\nsubject to noise from\nthe \\emph{mutually contaminated learning} model,\nthen owing to a simple identity\nwe only need to change the desired fairness-tolerance.\nThe requisite tolerance can be estimated by leveraging existing noise-rate estimators from the label noise literature.\n\\AKMEDIT{from the label noise literature}.\nWe finally show that our procedure is empirically effective on two case-studies involving sensitive feature censoring.\n",
+  "title": "Noise-tolerant fair classification"
+}

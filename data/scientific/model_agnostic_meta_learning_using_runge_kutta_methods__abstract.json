@@ -1,0 +1,10 @@
+{
+  "authors": [
+    "Daniel Jiwoong Im",
+    "Yibo Jiang",
+    "Nakul Verma"
+  ],
+  "date_published": "2019-10-16",
+  "raw_tex": "\\begin{abstract}\nMeta learning has emerged as an important framework for learning new tasks from just a few examples. \nThe success of any meta-learning model depends on (i) its fast adaptation to new tasks, as well as (ii) having a shared representation across similar tasks.\nHere we extend the model-agnostic meta-learning (MAML) framework introduced by \\citet{Finn2017} to achieve improved performance by analyzing the temporal dynamics of the optimization procedure via the Runge-Kutta method.\nThis method enables us to gain fine-grained control over the optimization and helps us achieve both the adaptation and representation goals across tasks. By leveraging this refined control, we demonstrate that there are multiple principled ways to update MAML and show that the classic MAML optimization is simply a special case of second order Runge-Kutta method that mainly focuses on fast-adaptation.   \nExperiments on benchmark classification, regression and reinforcement learning tasks show that this refined control helps attain improved results. \n\none trains on a few examples from distributions of similar tasks, and quickly adapting to a new task is an important direction of research in machine learning. We propose a general model-agnostic meta-learning (MAML) method that is encouraged to find good meta-parameters which can quickly change its internal representation and find shared feature representation among the tasks. Our proposed method formalizes MAML optimization using Runge-Kutta methods. Such a formalism is derived based on approximating the learning dynamics of MAML using ODE integrators. We demonstrate that traditional MAML update rule corresponds to one of the class of second-order Runge-Kutta methods. Experimental results show that encouraging both fast-adaptation and shared representation can improve the performance of benchmark classification, regression, and reinforcement learning tasks. \n\n\n\\end{abstract}",
+  "title": "Model-Agnostic Meta-Learning using Runge-Kutta Methods"
+}

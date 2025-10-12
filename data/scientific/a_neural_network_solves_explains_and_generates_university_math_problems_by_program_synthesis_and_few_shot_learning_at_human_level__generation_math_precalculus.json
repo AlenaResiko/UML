@@ -1,0 +1,25 @@
+{
+  "authors": [
+    "Iddo Drori",
+    "Sarah Zhang",
+    "Reece Shuttleworth",
+    "Leonard Tang",
+    "Albert Lu",
+    "Elizabeth Ke",
+    "Kevin Liu",
+    "Linda Chen",
+    "Sunny Tran",
+    "Newman Cheng",
+    "Roman Wang",
+    "Nikhil Singh",
+    "Taylor L. Patti",
+    "Jayson Lynch",
+    "Avi Shporer",
+    "Nakul Verma",
+    "Eugene Wu",
+    "Gilbert Strang"
+  ],
+  "date_published": "2021-12-31",
+  "raw_tex": "\\section{Generation of MATH: Precalculus}\n\\label{sec:generation-MATH-Precalculus}\n\n\\begin{longtable}{|l|p{8cm}|p{8cm}|} \n\\caption{New questions generated from Precalculus questions in the MATH dataset, and the closest question among the existing questions.}\\\\\n\\hline\n\\textbf{ID} & \\textbf{Auto-Generated question} & \\textbf{Closest question in the dataset}\\\\\n\\hline\n1 & Let $A$ be the matrix $\\begin{bmatrix} 1 & 2 & 3 \\\\ 4 & 5 & 6 \\\\ 7 & 8 & 9 \\end{bmatrix}$ Find the determinant of $A^2 + A^3.$ & \nIf $\\det A   2$ and $\\det B   12,$ then find $\\det (AB).$\n\\\\\n\\hline\n2 & Let $A$ be a matrix such that $\\det A   -1.$ Find the determinant of $A^2.$ & \nIf $\\det A   5,$ then find $\\det (A^3).$\n\\\\\n\\hline\n3 & Let $A$ be a matrix such that $A^2   I$ and $A^3   I.$ Find the determinant of $A.$&\nIf $\\det A   5,$ then find $\\det (A^3).$\n\\\\\n\\hline\n4 & Let $A$ be the matrix $\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}$ and $B$ be the matrix $\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix}.$ Find the determinant of $AB$ and $BA.$& \nIf $\\det A   2$ and $\\det B   12,$ then find $\\det (AB).$\n\\\\ \n\\hline\n5 & Let $A$ be a matrix such that $\\det A   -1.$ Find the determinant of $A^{-1}$ if it exists.& \nIf $\\det A   5,$ then find $\\det (A^3).$\n\\\\\n\\hline\n6 & Let $A$ be a matrix such that $\\det A   -1.$ Find the determinant of $A^2.$&\nIf $\\det A   5,$ then find $\\det (A^3).$\n\\\\\n\\hline\n7 & Let $A$ be a point on the unit circle in the complex plane, and let $B$ be a point on the unit circle in the complex plane. If $A   e^{i\\pi/6}$ and $B   e^{i\\pi/3},$ then find $AB.$& \nIf the six solutions of $x^6-64$ are written in the form $a+bi$, where $a$ and $b$ are real, find the product of those solutions with $a>0.$\n\\\\\n\\hline\n8 & Find the equation of the plane that passes through the points $(1,2,3)$, $(2,3,4)$, and $(3,4,5).$ & Let $S$ be a region in the plane with area 10. When we apply the matrix $\\begin{bmatrix} 2 & 1 \\\\ 7 & -3 \\end{bmatrix}$to $S,$ we obtain the region $S'.$   Find the area of $S'.$\n\\\\\n\\hline\n9 & Find the angle between the vectors $\\begin{bmatrix} 1 \\\\ 1 \\\\ 0 \\end{bmatrix}$ and $\\begin{bmatrix} 1 \\\\ 0 \\\\ 1 \\end{bmatrix}.$ & \nIf $\\|A\\|   3$ and $\\|B\\|   6,$ then find $(A + B) \\cdot (A - B).$\n\\\\\n\\hline\n10 & Find the number of ordered pairs $(x,y)$ such that $x^2 + y^2   1$ and $x^2 + y^2 + 2xy   1.$ & \nIf the six solutions of $x^6-64$ are written in the form $a+bi$, where $a$ and $b$ are real, find the product of those solutions with $a > 0.$\n\\\\ \\hline\n\\end{longtable}",
+  "title": "A Neural Network Solves, Explains, and Generates University Math Problems by Program Synthesis and Few-Shot Learning at Human Level"
+}

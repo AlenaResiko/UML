@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\begin{algorithm}\n\\SetAlgoLined\n\\KwIn{A collection of sentence graphs $D   \\{S_1, S_2, ..., S_n\\}$, where $S_i   (V_i, E_i)$.}\n// Initialize document graph with artificial root\\\\\n$V \\gets \\bigcup_{i1}^n V_i \\cup \\{-1\\}$\\\\\n$E \\gets \\bigcup_{i1}^n E_i \\cup \\{(-1, root(S_i)) \\mid i \\in [n]\\}$\\\\\n// Collect subgraphs and aligned text spans\\\\\np $\\gets \\{n \\in V_i \\mid label(n)   person\\}$\\\\\nc $\\gets \\{descendants(n) \\mid n \\in$ p$\\}$\\\\\n// Assign cluster ids to subgraphs via spans\\\\\nspans $\\gets \\{\\{\\bigcup span(n) \\mid n \\in C_i\\} \\mid C_i \\in $ c$\\}$\\\\\nids $\\gets \\{cluster\\_id(span(p_i))$ if $p_i$ is clustered else $cluster\\_id(C_i) \\mid C_i \\in$ c$\\}$\\\\\n// Partition coreferent type matches\\\\\n$P \\gets \\{\\}$\\\\\n\\For{$k \\in cluster\\_ids$}{\n   cluster $\\gets \\{C_i \\in$ c $\\mid ids[i]   k\\}$\\\\\n   $C \\gets \\{n \\in C_i \\mid C_i \\in$ cluster$\\}$\\\\\n   \\For{unique $l \\in \\{label(n) \\mid n \\in C\\}$}{\n   $P \\gets P \\cup \\{\\{n \\in C \\mid label(n)   l\\}\\}$\n   }\n}\n// Concept label partition on unmerged nodes\\\\\n$U \\gets \\{n \\in V \\mid n \\notin \\bigcup_i \\{P_i \\in P\\}\\}$\\\\\n\\For{unique $l \\in \\{label(n) \\mid n \\in U\\}$}{\n   $P \\gets P \\cup \\{\\{n \\in U \\mid label(n)   l\\}\\}$\n}\n// Merge from partition\\\\\n$V \\gets \\{i | P_i \\in P\\}$\\\\\n$E \\gets \\{(i, j) | P_i, P_j \\in P, \\exists k \\in P_i, l \\in P_j \\ni (k, l) \\in E\\}$\\\\\n\\Return{$(V, E)$}\\\\\n\\caption{Combined merging}\n\\label{alg:merge}\n\\end{algorithm}\n",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

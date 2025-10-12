@@ -50,7 +50,7 @@ def append_arxiv_results_to_registry(
     new_links = []
     for item in results:
         url = item.get("url_abs")
-        if url and url.startswith("https://arxiv.org/abs/") and url not in existing:
+        if url and re.match(r"^https?://arxiv\.org/abs/", url) and url not in existing:
             new_links.append(url)
             existing.add(url)
 

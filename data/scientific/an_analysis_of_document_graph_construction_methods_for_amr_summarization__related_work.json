@@ -1,0 +1,11 @@
+{
+  "authors": [
+    "Fei-Tzin Lee",
+    "Chris Kedzie",
+    "Nakul Verma",
+    "Kathleen McKeown"
+  ],
+  "date_published": "2021-11-27",
+  "raw_tex": "\\section{Related Work}\nTo the best of   our knowledge, \\citet{ogorman-etal-2018-amr} is the only prior work providing a dataset for cross-sentence AMR node co-reference. The primary distinction between their annotations and ours is that while they annotate co-reference chains across sentences in individual documents, we focus specifically on AMR as applied to summarization, and explicitly annotate alignments between documents and summaries rather than within documents. This allows us to evaluate not only performance on within-document merging but on the additional step of node-level content selection as well. We apply these annotations to evaluate merging and content selection in existing methods of single-document AMR summarization.\n\nSeminal work on summarization using AMR~\\cite{liu-etal-2015-toward-abstractive} first merges the AMR annotations for all sentences in a particular document into a single graph by identifying nodes with identical text labels, then treats summarization of the document as a subgraph selection task and solves it using integer linear programming. They evaluate their selected subgraph by measuring overlap of nodes selected from the merged graph with labels inferred from alignments to the summary nodes. Subsequent research in this space builds on or compares to this approach. For example, \\citet{dohare-etal-2018-unsupervised} suggest an alternative way of merging the document AMR into a single graph using text coreference, but their method merges nodes associated with the key word in co-referent noun phrases, while we merge nodes by focusing on components of the graph. Additional work on AMR summarization follows that of \\citet{liu-etal-2015-toward-abstractive} for merging but instead focuses on \\textit{multi-document} summarization~\\cite{liao-etal-2018-abstract} or methods for natural language   realization of the summary AMR graph~\\cite{hardy-vlachos-2018-guided}. In contrast, our focus is on content selection for single-document summarization.",
+  "title": "An analysis of document graph construction methods for AMR summarization"
+}

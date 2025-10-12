@@ -5,7 +5,7 @@ from pathlib import Path
 
 import requests
 
-from uml_project.data.constants import SCIENTIFIC_REGISTRY, ArxivSearchResultDict, RegistryDict
+from uml_project.data.constants import SCIENTIFIC_REGISTRY, ArxivRegistry, ArxivSearchResultDict
 
 
 def append_arxiv_results_to_registry(
@@ -35,11 +35,11 @@ def append_arxiv_results_to_registry(
     if reg_path.exists():
         with open(reg_path, encoding="utf-8") as f:
             try:
-                registry: RegistryDict = json.load(f)
+                registry: ArxivRegistry = json.load(f)
             except json.JSONDecodeError:
-                registry: RegistryDict = {"arxiv": []}
+                registry: ArxivRegistry = {"arxiv": []}
     else:
-        registry: RegistryDict = {"arxiv": []}
+        registry: ArxivRegistry = {"arxiv": []}
 
     # # Ensure proper structure
     # if "arxiv" not in registry or not isinstance(registry["arxiv"], list):

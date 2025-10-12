@@ -6,8 +6,12 @@ from pathlib import Path
 ROOT_DIR = Path(os.environ.get("DATA_DIR") or Path(__file__).parent.parent.parent).resolve() / "data"
 MUSIC_DIR = ROOT_DIR / "music/"
 SCRATCH_DIR = ROOT_DIR / "scratch/"  # for temporary files
+
 SCIENTIFIC_DIR = ROOT_DIR / "scientific/"
 SCIENTIFIC_REGISTRY = SCIENTIFIC_DIR / "REGISTRY.json"  # JSON file with list of paper URLs
+
+HF_DIR = ROOT_DIR / "huggingface/"  # for HuggingFace datasets/models
+HF_REGISTRY = HF_DIR / "REGISTRY.json"  # JSON file with list of datasets/models
 
 # KAGGLE
 TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"
@@ -15,6 +19,9 @@ TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"
 
 # GENIUS
 GENIUS_ACCESS_TOKEN = os.environ.get("GENIUS_ACCESS_TOKEN")  # Store in .env file
+
+
+# HuggingFace
 
 
 # Dtypes
@@ -37,5 +44,10 @@ class ArxivSearchResultDict(t.TypedDict, total=True):
     url_pdf: str | t.Any | None  # e.g. "https://arxiv.org/pdf/2503.19280.pdf"
 
 
-class RegistryDict(t.TypedDict, total=True):
+class ArxivRegistry(t.TypedDict, total=True):
     arxiv: list[str]  # list of arXiv abs URLs
+
+
+class HuggingFaceRegistry(t.TypedDict, total=True):
+    datasets: list[str]  # list of dataset repo IDs, e.g. ["imdb", "squad", "org/repo_id"]
+    # models: list[str]  # list of model repo IDs, e.g. ["gpt2", "bert-base-uncased", "org/repo_id"]

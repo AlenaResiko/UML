@@ -1,5 +1,12 @@
-from sentence_transformers import SentenceTransformer, models
+import os
+
+import torch
+from sentence_transformers import SentenceTransformer, evaluation, losses, models
 from torch import nn
+from torch.utils.data import Dataset
+from utils import *
+
+# from datasets import Dataset
 
 
 def build_model(base_model_name: str, target_dim: int, DEVICE: str = "cpu"):
@@ -27,3 +34,49 @@ def build_model(base_model_name: str, target_dim: int, DEVICE: str = "cpu"):
     )
     model = SentenceTransformer(modules=[word_embedding_model, pooling_model, dense], device=DEVICE)  # type: ignore
     return model
+
+
+def train_pooler_then_finetune(
+    model: SentenceTransformer,
+    train_examples: Dataset | pd.DataFrame,
+    val_examples: list[InputExample],
+    out_dir: str,
+    notebook_vars: NotebookVars,
+):
+    # Step A: train pooler only (encoder frozen)
+    freeze_encoder_only(model)
+    train_examples = t.cast(Dataset, train_examples)
+    train_dataloader = torch.utils.data.DataLoader(train_examples, batch_size=notebook_vars["BATCH_SIZE"], shuffle=True)
+    # Use CosineSimilarityLoss for contrastive-style or MSELoss for regression
+    # (STS)
+    loss_fct = losses.CosineSimilarityLoss(model)
+    evaluator = evaluation.EmbeddingSimilarityEvaluator.from_input_examples(
+        val_examples, name="sts-val"
+    )  # note this benchmark compares against human-annotated similarity scores;
+    # ABOBA: we can't self-annotate sim for Swift or Verma so we can't get
+    # encoder error
+    model.fit(
+        train_objectives=[(train_dataloader, loss_fct)],
+        evaluator=evaluator,
+        epochs=notebook_vars["EPOCHS_POOLER"],
+        warmup_steps=100,
+        output_path=os.path.join(out_dir, "stepA_pooler_only"),
+        optimizer_params={"lr": notebook_vars["POOLER_LR"]},
+    )
+    # Step B: unfreeze encoder and finetune whole model
+    unfreeze_model_weights(model)
+    # Recreate dataloader (sentence-transformers expects InputExamples in an
+    # in-memory list)
+    train_dataloader = torch.utils.data.DataLoader(train_examples, batch_size=notebook_vars["BATCH_SIZE"], shuffle=True)
+    loss_fct2 = losses.MultipleNegativesRankingLoss(
+        model
+    )  # good objective for contrastive training (requires positive pairs)
+    model.fit(
+        train_objectives=[(train_dataloader, loss_fct2)],
+        evaluator=evaluator,
+        epochs=notebook_vars["EPOCHS_FINETUNE"],
+        warmup_steps=100,
+        output_path=os.path.join(out_dir, "stepB_finetune"),
+        optimizer_params={"lr": notebook_vars["FINETUNE_LR"]},
+    )
+    # -------------------------

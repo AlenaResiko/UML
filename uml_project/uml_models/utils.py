@@ -6,13 +6,14 @@ from sentence_transformers import InputExample, SentenceTransformer, models
 
 
 def df_to_input_examples(df: pd.DataFrame, use_labels=True):
-    ex = []
-    for _, r in df.iterrows():
-        if use_labels:
-            # STS labels are 0..5; evaluator typically expects 0..1
-            ex.append(InputExample(texts=[r["sentence1"], r["sentence2"]], label=float(r["label"]) / 5.0))
-        else:
-            ex.append(InputExample(texts=[r["sentence1"], r["sentence2"]]))
+    # vectorized: convert columns to arrays and build InputExample list via comprehension
+    s1 = df["sentence1"].astype(str).to_numpy()
+    s2 = df["sentence2"].astype(str).to_numpy()
+    if use_labels:
+        labels = (df["label"].astype(float) / 5.0).to_numpy()
+        ex = [InputExample(texts=[a, b], label=float(l)) for a, b, l in zip(s1, s2, labels)]
+    else:
+        ex = [InputExample(texts=[a, b]) for a, b in zip(s1, s2)]
     return ex
 
 

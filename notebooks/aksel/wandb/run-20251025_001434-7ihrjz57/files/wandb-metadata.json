@@ -1,0 +1,36 @@
+{
+  "apple": {
+    "ecpuCores": 2,
+    "gpuCores": 24,
+    "memoryGb": 32,
+    "name": "Apple M1 Max",
+    "pcpuCores": 8,
+    "ramTotalBytes": "34359738368"
+  },
+  "codePath": "notebooks/aksel/TEMPLATE.ipynb",
+  "codePathLocal": "TEMPLATE.ipynb",
+  "cpu_count": 10,
+  "cpu_count_logical": 10,
+  "disk": {
+    "/": {
+      "total": "994662584320",
+      "used": "851639042048"
+    }
+  },
+  "email": "akseldkw@gmail.com",
+  "executable": "/Users/Akseldkw/micromamba/envs/kret_312/bin/python",
+  "git": {
+    "commit": "2da9162c2565323bc20074f7f300f9124e06bcb5",
+    "remote": "git@github.com:AlenaResiko/UML.git"
+  },
+  "host": "Aksels-Macbook-256.local",
+  "memory": {
+    "total": "34359738368"
+  },
+  "os": "macOS-26.0.1-arm64-arm-64bit",
+  "program": "/Users/Akseldkw/coding/Columbia/UML-Project/notebooks/aksel/TEMPLATE.ipynb",
+  "python": "CPython 3.12.11",
+  "root": "/Users/Akseldkw/coding/Columbia/UML-Project/notebooks/aksel",
+  "startedAt": "2025-10-25T04:14:34.245558Z",
+  "writerId": "r0ne7q4095ms0lq4gc0kmsz8x9v5g4iv"
+}

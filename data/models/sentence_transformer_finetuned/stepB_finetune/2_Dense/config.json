@@ -1,0 +1,6 @@
+{
+  "activation_function": "torch.nn.modules.activation.Tanh",
+  "bias": true,
+  "in_features": 384,
+  "out_features": 64
+}

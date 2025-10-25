@@ -1,10 +1,10 @@
-import os
+import pathlib
 
-import torch
 from sentence_transformers import SentenceTransformer, evaluation, losses, models
 from torch import nn
-from torch.utils.data import Dataset
-from utils import *
+from torch.utils.data import DataLoader
+
+from uml_project.uml_models.utils import *
 
 # from datasets import Dataset
 
@@ -38,15 +38,17 @@ def build_model(base_model_name: str, target_dim: int, DEVICE: str = "cpu"):
 
 def train_pooler_then_finetune(
     model: SentenceTransformer,
-    train_examples: Dataset | pd.DataFrame,
+    train_examples: list[InputExample],
     val_examples: list[InputExample],
-    out_dir: str,
+    out_dir: pathlib.Path | str,
     notebook_vars: NotebookVars,
 ):
     # Step A: train pooler only (encoder frozen)
     freeze_encoder_only(model)
-    train_examples = t.cast(Dataset, train_examples)
-    train_dataloader = torch.utils.data.DataLoader(train_examples, batch_size=notebook_vars["BATCH_SIZE"], shuffle=True)
+    out_dir = pathlib.Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    train_dataloader = DataLoader(train_examples, batch_size=notebook_vars["BATCH_SIZE"], shuffle=True)  # type: ignore
     # Use CosineSimilarityLoss for contrastive-style or MSELoss for regression
     # (STS)
     loss_fct = losses.CosineSimilarityLoss(model)
@@ -60,14 +62,14 @@ def train_pooler_then_finetune(
         evaluator=evaluator,
         epochs=notebook_vars["EPOCHS_POOLER"],
         warmup_steps=100,
-        output_path=os.path.join(out_dir, "stepA_pooler_only"),
+        output_path=str(out_dir / "stepA_pooler_only"),
         optimizer_params={"lr": notebook_vars["POOLER_LR"]},
     )
     # Step B: unfreeze encoder and finetune whole model
     unfreeze_model_weights(model)
     # Recreate dataloader (sentence-transformers expects InputExamples in an
     # in-memory list)
-    train_dataloader = torch.utils.data.DataLoader(train_examples, batch_size=notebook_vars["BATCH_SIZE"], shuffle=True)
+    train_dataloader = DataLoader(train_examples, batch_size=notebook_vars["BATCH_SIZE"], shuffle=True)  # type: ignore
     loss_fct2 = losses.MultipleNegativesRankingLoss(
         model
     )  # good objective for contrastive training (requires positive pairs)
@@ -76,7 +78,7 @@ def train_pooler_then_finetune(
         evaluator=evaluator,
         epochs=notebook_vars["EPOCHS_FINETUNE"],
         warmup_steps=100,
-        output_path=os.path.join(out_dir, "stepB_finetune"),
+        output_path=str(out_dir / "stepB_finetune"),
         optimizer_params={"lr": notebook_vars["FINETUNE_LR"]},
     )
-    # -------------------------
+    return model

@@ -3,21 +3,23 @@ import typing as t
 from pathlib import Path
 
 # PATHS
-ROOT_DIR = Path(os.environ.get("DATA_DIR") or Path(__file__).parent.parent.parent).resolve() / "data"
-MUSIC_DIR = ROOT_DIR / "music/"
-SCRATCH_DIR = ROOT_DIR / "scratch/"  # for temporary files
+DATA_DIR = Path(os.environ.get("DATA_DIR") or Path(__file__).parent.parent.parent).resolve() / "data"
+MUSIC_DIR = DATA_DIR / "music/"
+SCRATCH_DIR = DATA_DIR / "scratch/"  # for temporary files
 
 # Scientific papers
-SCIENTIFIC_DIR = ROOT_DIR / "scientific/"
+SCIENTIFIC_DIR = DATA_DIR / "scientific/"
 SCIENTIFIC_REGISTRY = SCIENTIFIC_DIR / "REGISTRY.json"  # JSON file with list of paper URLs
 
 # HuggingFace
-HF_DIR = ROOT_DIR / "huggingface/"  # for HuggingFace datasets/models
+HF_DIR = DATA_DIR / "huggingface/"  # for HuggingFace datasets/models
 HF_REGISTRY = HF_DIR / "REGISTRY.json"  # JSON file with list of datasets/models
 
 # KAGGLE
 TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"
 
+# NLTK
+NLTK_DATA_DIR = DATA_DIR / "nltk/"  # for NLTK
 
 # GENIUS
 GENIUS_ACCESS_TOKEN = os.environ.get("GENIUS_ACCESS_TOKEN")  # Store in .env file

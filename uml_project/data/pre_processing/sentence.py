@@ -13,30 +13,55 @@ Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 import re
 import numpy as np
+from typing import Literal
 from collections.abc import Iterable
 import spacy
 from spacy.language import Language
 
 IGNORE_SENTENCE_START_CHARS = set("!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~")
+from uml_project.data.pre_processing.latex_helper import strip_latex_prose, latex_to_clean_sentences
 
 
 # ---------- main API ----------
 def define_sentence(
-    text: str, nlp: Language | None = None, min_chars: int = 2, dedupe_case_insensitive: bool = True
+    text: str,
+    nlp: Language | None = None,
+    min_chars: int = 2,
+    dedupe_case_insensitive: bool = True,
+    *,
+    latex_mode: Literal["strip", "sentences"] | None = None,
 ) -> np.ndarray:
     """
     Split `text` into sentence-like units using spaCy, apply lyric/LaTeX/URL filters,
     and deduplicate. Returns a numpy array of strings.
+
+    Args
+    ----
+    latex_mode:
+        None (default): no special handling; run the existing line-aware logic.
+        "strip":       pre-clean LaTeX into prose with `strip_latex_prose`, then run the
+                       normal sentence splitting/filters/dedup from this module.
+        "sentences":   bypass this module's splitter and directly use
+                       `latex_to_clean_sentences` (which returns spaCy-split sentences)
+                       and then only do adjacent dedupe here.
     """
     if not isinstance(text, str) or not text.strip():
         return np.array([], dtype=object)
 
-    if nlp is None:
-        nlp = build_sentencizer(use_better_model=True)
+    nlp = build_sentencizer(use_better_model=True) if nlp is None else nlp
 
-    # Strategy: be line-aware (good for lyrics). For each line:
-    #   - If it already looks like a full sentence (has . ! ?), use spaCy to split it.
-    #   - Otherwise, keep the line as a single unit after cleaning.
+    # --- LaTeX specialized paths ---
+    if latex_mode == "sentences":
+        # Use the LaTeX pipeline end-to-end for sentence extraction
+        sents = latex_to_clean_sentences(text, nlp=nlp).tolist()
+        sents = _dedupe_consecutive(sents, casefold=dedupe_case_insensitive)
+        return np.array(sents, dtype=object)
+
+    if latex_mode == "strip":
+        # Pre-clean LaTeX into readable prose, then fall through to normal flow
+        text = strip_latex_prose(text)
+
+    # --- Normal flow (lyrics/prose, line-aware) ---
     sentences: list[str] = []
     for raw in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
         line = _clean(raw)
@@ -44,14 +69,12 @@ def define_sentence(
             continue
         if _looks_like_garbage(line):
             continue
-        # prose-like line → let spaCy split on punctuation
         if _END_PUNCT.search(line):
             for s in nlp(line).sents:
                 seg = _clean(str(s))
                 if seg and not _looks_like_garbage(seg) and len(seg) >= min_chars:
                     sentences.append(seg)
         else:
-            # lyric-like line without end punctuation → take as-is
             if len(line) >= min_chars:
                 sentences.append(line)
 
@@ -76,7 +99,7 @@ def build_sentencizer(use_better_model: bool = False) -> Language:
 
 # ---------- regex filters ----------
 # [Chorus], [Verse 1], [Intro]
-_BRACKETED_TAG = re.compile(r"^\s*$begin:math:display$[^$end:math:display$]+\]\s*:?\s*$")
+_BRACKETED_TAG = re.compile(r"^\s*\[[^\]]+\]\s*:?\s*$")
 # Genius/lyrics header like: "123 Contributors..."
 _HEADER_JUNK = re.compile(r"^\s*\d+\s+Contributors", re.I)
 _LATEX_LINE = re.compile(r"^\s*\\[A-Za-z@]+")  # \section, \begin{...}, \newcommand

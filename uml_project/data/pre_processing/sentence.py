@@ -13,8 +13,7 @@ Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 import re
 import numpy as np
-from typing import Literal
-from collections.abc import Iterable
+from typing import Literal, Iterable
 import spacy
 from spacy.language import Language
 

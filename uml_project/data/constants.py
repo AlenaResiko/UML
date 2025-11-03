@@ -16,7 +16,8 @@ HF_DIR = ROOT_DIR / "huggingface/"  # for HuggingFace datasets/models
 HF_REGISTRY = HF_DIR / "REGISTRY.json"  # JSON file with list of datasets/models
 
 # KAGGLE
-TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"
+TAYLOR_SWIFT_KAGGLE = "ishikajohari/taylor-swift-all-lyrics-30-albums"  # Kaggle dataset slug
+TAYLOR_SWIFT_DIR = MUSIC_DIR / "taylor_swift/"  # Directory to store Taylor Swift lyrics
 
 
 # GENIUS

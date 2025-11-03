@@ -34,7 +34,7 @@ def define_sentence(
         return np.array([], dtype=object)
 
     if nlp is None:
-        nlp = build_sentencizer(use_small_model=False)
+        nlp = build_sentencizer(use_better_model=True)
 
     # Strategy: be line-aware (good for lyrics). For each line:
     #   - If it already looks like a full sentence (has . ! ?), use spaCy to split it.
@@ -62,12 +62,12 @@ def define_sentence(
 
 
 # ---------- spaCy setup ----------
-def build_sentencizer(use_small_model: bool = False) -> Language:
+def build_sentencizer(use_better_model: bool = False) -> Language:
     """
     Return an English pipeline with only a sentencizer.
     use_small_model=True if you've installed 'en_core_web_sm' and want slightly better tokenization.
     """
-    if use_small_model:
+    if use_better_model:
         nlp = spacy.load("en_core_web_sm", disable=["tagger", "parser", "ner", "lemmatizer"])
     else:
         nlp = spacy.blank("en")  # no download, fast

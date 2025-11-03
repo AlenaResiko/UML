@@ -48,7 +48,12 @@ def define_sentence(
     if not isinstance(text, str) or not text.strip():
         return np.array([], dtype=object)
 
+<<<<<<< HEAD
     nlp = build_sentencizer(use_better_model=True) if nlp is None else nlp
+=======
+    if nlp is None:
+        nlp = build_sentencizer(use_better_model=True)
+>>>>>>> 88b889f (Pre-Processing2)
 
     # --- LaTeX specialized paths ---
     if latex_mode == "sentences":
@@ -83,6 +88,13 @@ def define_sentence(
 
 # ---------- spaCy setup ----------
 def build_sentencizer(use_better_model: bool = False) -> Language:
+<<<<<<< HEAD
+=======
+    """
+    Return an English pipeline with only a sentencizer.
+    use_small_model=True if you've installed 'en_core_web_sm' and want slightly better tokenization.
+    """
+>>>>>>> 88b889f (Pre-Processing2)
     if use_better_model:
         nlp = spacy.load("en_core_web_sm", disable=["tagger", "parser", "ner", "lemmatizer"])
     else:

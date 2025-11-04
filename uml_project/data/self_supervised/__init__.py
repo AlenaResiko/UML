@@ -1,1 +1,1 @@
-from uml_project.data.self_supervised.synthetic_labels import generate_synthetic_position_labels
+from uml_project.data.self_supervised.synthetic_labels import synthetic_similarity_labels

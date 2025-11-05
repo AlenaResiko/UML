@@ -10,4 +10,4 @@ https://docs.google.com/document/d/1iEbmiGagz64P1kkLeR32FaTMiEfaba8-CwHGpI4GJw4/
 
 # Hyperparameters
 train_test_split = 0.8
-seed - 42
+seed = 42

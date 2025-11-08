@@ -1,0 +1,1 @@
+from uml_project.data.self_supervised.synthetic_labels import synthetic_similarity_labels

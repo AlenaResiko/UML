@@ -1,0 +1,22 @@
+{
+    "corpus_name": "scientific_papers",
+    "description": "Sentence-level dataset built from parsed scientific papers.",
+    "num_documents": 1,
+    "num_sentences": 32,
+    "columns": [
+        "corpus",
+        "doc_id",
+        "sent_index",
+        "sentence",
+        "split",
+        "token_count"
+    ],
+    "example_entry": {
+        "corpus": "scientific_papers",
+        "doc_id": "t_sne_exaggerates_clusters_provably__related_work",
+        "sent_index": 0,
+        "sentence": "There are two notably distinct ways of contextualizing t-SNE, the data visualization method introduced by .",
+        "split": "train",
+        "token_count": 16
+    }
+}

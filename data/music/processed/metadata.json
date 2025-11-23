@@ -1,0 +1,22 @@
+{
+    "corpus_name": "taylor_songs",
+    "description": "Sentence-level dataset built from parsed music songs.",
+    "num_documents": 1,
+    "num_sentences": 31,
+    "columns": [
+        "corpus",
+        "doc_id",
+        "sent_index",
+        "sentence",
+        "split",
+        "token_count"
+    ],
+    "example_entry": {
+        "corpus": "taylor_songs",
+        "doc_id": "thelakes_originalversion_",
+        "sent_index": 0,
+        "sentence": "Is it romantic how all my elegies eulogize me?",
+        "split": "train",
+        "token_count": 9
+    }
+}

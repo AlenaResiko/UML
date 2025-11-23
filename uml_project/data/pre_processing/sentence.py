@@ -2,7 +2,7 @@
 Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 1. Deduplicate only **adjacent** repeated sentences (case-insensitive).
-   Ex: Taylor Swift lyrics – remove repeated chorus lines that appear back-to-back,
+   Ex: Taylor Swift lyrics - remove repeated chorus lines that appear back-to-back,
    but keep the same line if it reappears later in the song.
 
 2. Remove sentences that start with a special character (non-alphanumeric) or match
@@ -13,7 +13,8 @@ Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 import re
 import numpy as np
-from typing import Literal, Iterable
+from typing import Literal
+from collections.abc import Iterable
 import spacy
 from spacy.language import Language
 

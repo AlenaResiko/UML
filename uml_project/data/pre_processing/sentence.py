@@ -2,7 +2,7 @@
 Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 1. Deduplicate only **adjacent** repeated sentences (case-insensitive).
-   Ex: Taylor Swift lyrics – remove repeated chorus lines that appear back-to-back,
+   Ex: Taylor Swift lyrics - remove repeated chorus lines that appear back-to-back,
    but keep the same line if it reappears later in the song.
 
 2. Remove sentences that start with a special character (non-alphanumeric) or match
@@ -13,7 +13,8 @@ Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 import re
 import numpy as np
-from typing import Literal, Iterable
+from typing import Literal
+from collections.abc import Iterable
 import spacy
 from spacy.language import Language
 
@@ -28,7 +29,7 @@ def define_sentence(
     min_chars: int = 2,
     dedupe_case_insensitive: bool = True,
     *,
-    latex_mode: Literal["strip", "sentences"] | None = None,
+    latex_mode: Literal["sentences", "strip"] | None = None,
 ) -> np.ndarray:
     """
     Split `text` into sentence-like units using spaCy, apply lyric/LaTeX/URL filters,
@@ -38,11 +39,11 @@ def define_sentence(
     ----
     latex_mode:
         None (default): no special handling; run the existing line-aware logic.
-        "strip":       pre-clean LaTeX into prose with `strip_latex_prose`, then run the
-                       normal sentence splitting/filters/dedup from this module.
         "sentences":   bypass this module's splitter and directly use
                        `latex_to_clean_sentences` (which returns spaCy-split sentences)
                        and then only do adjacent dedupe here.
+        "strip":       pre-clean LaTeX into prose with `strip_latex_prose`, then run the
+                       normal sentence splitting/filters/dedup from this module.
     """
     if not isinstance(text, str) or not text.strip():
         return np.array([], dtype=object)
@@ -51,13 +52,11 @@ def define_sentence(
 
     # --- LaTeX specialized paths ---
     if latex_mode == "sentences":
-        # Use the LaTeX pipeline end-to-end for sentence extraction
         sents = latex_to_clean_sentences(text, nlp=nlp).tolist()
         sents = _dedupe_consecutive(sents, casefold=dedupe_case_insensitive)
         return np.array(sents, dtype=object)
 
     if latex_mode == "strip":
-        # Pre-clean LaTeX into readable prose, then fall through to normal flow
         text = strip_latex_prose(text)
 
     # --- Normal flow (lyrics/prose, line-aware) ---
@@ -68,6 +67,7 @@ def define_sentence(
             continue
         if _looks_like_garbage(line):
             continue
+
         if _END_PUNCT.search(line):
             for s in nlp(line).sents:
                 seg = _clean(str(s))
@@ -83,36 +83,42 @@ def define_sentence(
 
 # ---------- spaCy setup ----------
 def build_sentencizer(use_better_model: bool = False) -> Language:
-    """
-    Return an English pipeline with only a sentencizer.
-    use_better_model=True if you've installed 'en_core_web_sm' and want slightly better tokenization.
-    """
     if use_better_model:
         nlp = spacy.load("en_core_web_sm", disable=["tagger", "parser", "ner", "lemmatizer"])
     else:
-        nlp = spacy.blank("en")  # no download, fast
+        nlp = spacy.blank("en")
     if "sentencizer" not in nlp.pipe_names:
         nlp.add_pipe("sentencizer")
     return nlp
 
 
 # ---------- regex filters ----------
-# [Chorus], [Verse 1], [Intro]
-_BRACKETED_TAG = re.compile(r"^\s*\[[^\]]+\]\s*:?\s*$")
-# Genius/lyrics header like: "123 Contributors..."
+_BRACKETED_TAG = re.compile(r"^\s*$begin:math:display$\[\^$end:math:display$]+\]\s*:?\s*$")
 _HEADER_JUNK = re.compile(r"^\s*\d+\s+Contributors", re.I)
-_LATEX_LINE = re.compile(r"^\s*\\[A-Za-z@]+")  # \section, \begin{...}, \newcommand
+_LATEX_LINE = re.compile(r"^\s*\\[A-Za-z@]+")
 _URL_LINE = re.compile(r"^\s*(https?://|www\.)", re.I)
 _ONLY_PUNCT = re.compile(r"^[\W_]+$")
+
+# old behavior: remove whole line if it *is* NNEmbed
+_EMBED_JUNK = re.compile(r"^\s*\d+\s*Embed\s*$", re.I)
+
+# NEW: remove *trailing* NNEmbed from real content
+_EMBED_SUFFIX = re.compile(r"\s*\d+Embed\b$", re.I)
+
 _MULTI_SPACE = re.compile(r"\s+")
-_END_PUNCT = re.compile(r"[.!?]")  # to detect sentencey lines
+_END_PUNCT = re.compile(r"[.!?]")
 
 
 def _clean(s: str) -> str:
-    return _MULTI_SPACE.sub(" ", s.replace("\u200b", "")).strip()
+    """Normalize spacing and remove *trailing* `NNEmbed` from real lyric lines."""
+    s = s.replace("\u200b", "")
+    # Strip the trailing garbage but keep real text
+    s = _EMBED_SUFFIX.sub("", s)
+    return _MULTI_SPACE.sub(" ", s).strip()
 
 
 def _looks_like_garbage(s: str) -> bool:
+    """Identify lines we want to completely drop."""
     if not s:
         return True
     if _BRACKETED_TAG.match(s):
@@ -125,26 +131,24 @@ def _looks_like_garbage(s: str) -> bool:
         return True
     if _ONLY_PUNCT.match(s):
         return True
+    # only drop Embed-lines when they contain *nothing else*
+    if _EMBED_JUNK.match(s):
+        return True
     if not s[0].isalnum() or s[0] in IGNORE_SENTENCE_START_CHARS:
         return True
-    # common lyric-site cruft
     low = s.lower()
-    if "get tickets" in low or "you might also like" in low or "embed" == low:
+    if "get tickets" in low or "you might also like" in low or low == "embed":
         return True
     return False
 
 
 def _dedupe_consecutive(strings: Iterable[str], casefold: bool = True) -> list[str]:
-    """
-    Only remove **consecutive** duplicates (case-insensitive if specified).
-    Keeps repeated lines that appear later in the text.
-    """
     out: list[str] = []
     prev_key: str | None = None
     for s in strings:
         k = s.casefold() if casefold else s
         if prev_key is not None and k == prev_key:
-            continue  # skip only immediately repeated lines
+            continue
         out.append(s)
         prev_key = k
     return out

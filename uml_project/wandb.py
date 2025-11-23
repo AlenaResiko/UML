@@ -1,8 +1,6 @@
-WANDB_API_KEY_MARIA = "9d1ce20d1cb21ad0cc328a263146f42d9f1320e3"
-WANDB_API_KEY_ALENA = "64d8148446500a794297bb1cb903f3e4ffd08c69"
-
-
 # Update config for an existing run
+
+"""
 import wandb
 api = wandb.Api()
 
@@ -55,3 +53,4 @@ print(f"Best run {runs[0].name} with {val_acc}% validation accuracy")
 
 runs[0].file("model.h5").download(replace=True)
 print("Best model saved to model-best.h5")
+"""

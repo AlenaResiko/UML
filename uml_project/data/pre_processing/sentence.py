@@ -2,11 +2,7 @@
 Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 1. Deduplicate only **adjacent** repeated sentences (case-insensitive).
-<<<<<<< HEAD
    Ex: Taylor Swift lyrics - remove repeated chorus lines that appear back-to-back,
-=======
-   Ex: Taylor Swift lyrics – remove repeated chorus lines that appear back-to-back,
->>>>>>> e872ce9 (Changes)
    but keep the same line if it reappears later in the song.
 
 2. Remove sentences that start with a special character (non-alphanumeric) or match
@@ -17,7 +13,8 @@ Take a string input 'text' and return a numpy array of pre-processed sentences.
 
 import re
 import numpy as np
-from typing import Literal, Iterable
+from typing import Literal
+from collections.abc import Iterable
 import spacy
 from spacy.language import Language
 
@@ -51,12 +48,7 @@ def define_sentence(
     if not isinstance(text, str) or not text.strip():
         return np.array([], dtype=object)
 
-<<<<<<< HEAD
     nlp = build_sentencizer(use_better_model=True) if nlp is None else nlp
-=======
-    if nlp is None:
-        nlp = build_sentencizer(use_better_model=True)
->>>>>>> 88b889f (Pre-Processing2)
 
     # --- LaTeX specialized paths ---
     if latex_mode == "sentences":
@@ -91,38 +83,19 @@ def define_sentence(
 
 # ---------- spaCy setup ----------
 def build_sentencizer(use_better_model: bool = False) -> Language:
-<<<<<<< HEAD
-=======
-    """
-    Return an English pipeline with only a sentencizer.
-    use_better_model=True if you've installed 'en_core_web_sm' and want slightly better tokenization.
-    """
->>>>>>> 88b889f (Pre-Processing2)
     if use_better_model:
         nlp = spacy.load("en_core_web_sm", disable=["tagger", "parser", "ner", "lemmatizer"])
     else:
-<<<<<<< HEAD
         nlp = spacy.blank("en")
-=======
-        nlp = spacy.blank("en")  # no download, fast
->>>>>>> e872ce9 (Changes)
     if "sentencizer" not in nlp.pipe_names:
         nlp.add_pipe("sentencizer")
     return nlp
 
 
 # ---------- regex filters ----------
-<<<<<<< HEAD
 _BRACKETED_TAG = re.compile(r"^\s*$begin:math:display$\[\^$end:math:display$]+\]\s*:?\s*$")
 _HEADER_JUNK = re.compile(r"^\s*\d+\s+Contributors", re.I)
 _LATEX_LINE = re.compile(r"^\s*\\[A-Za-z@]+")
-=======
-# [Chorus], [Verse 1], [Intro]
-_BRACKETED_TAG = re.compile(r"^\s*$begin:math:display$[^$end:math:display$]+\]\s*:?\s*$")
-# Genius/lyrics header like: "123 Contributors..."
-_HEADER_JUNK = re.compile(r"^\s*\d+\s+Contributors", re.I)
-_LATEX_LINE = re.compile(r"^\s*\\[A-Za-z@]+")  # \section, \begin{...}, \newcommand
->>>>>>> e872ce9 (Changes)
 _URL_LINE = re.compile(r"^\s*(https?://|www\.)", re.I)
 _ONLY_PUNCT = re.compile(r"^[\W_]+$")
 
@@ -170,23 +143,12 @@ def _looks_like_garbage(s: str) -> bool:
 
 
 def _dedupe_consecutive(strings: Iterable[str], casefold: bool = True) -> list[str]:
-<<<<<<< HEAD
-=======
-    """
-    Only remove **consecutive** duplicates (case-insensitive if specified).
-    Keeps repeated lines that appear later in the text.
-    """
->>>>>>> e872ce9 (Changes)
     out: list[str] = []
     prev_key: str | None = None
     for s in strings:
         k = s.casefold() if casefold else s
         if prev_key is not None and k == prev_key:
-<<<<<<< HEAD
             continue
-=======
-            continue  # skip only immediately repeated lines
->>>>>>> e872ce9 (Changes)
         out.append(s)
         prev_key = k
     return out

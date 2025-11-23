@@ -103,8 +103,7 @@ _ONLY_PUNCT = re.compile(r"^[\W_]+$")
 _EMBED_JUNK = re.compile(r"^\s*\d+\s*Embed\s*$", re.I)
 
 # NEW: remove *trailing* NNEmbed from real content
-_EMBED_SUFFIX = re.compile(r"\s*\d+Embed\b$", re.I)
-
+_EMBED_SUFFIX = re.compile(r"\s*\S*Embed\b\"?$", re.I)
 _MULTI_SPACE = re.compile(r"\s+")
 _END_PUNCT = re.compile(r"[.!?]")
 

@@ -23,11 +23,24 @@ _INLINE_MATH = re.compile(r"(\$[^$]+\$|\\\([^)]*\\\))")
 # strip commands that are never useful in prose
 _CMD_DROP = re.compile(
     r"""
-    \\(label|ref|eqref|citep?|citet|footnote|url|href|nonumber|hline|cline)\b
+    \\(label|ref|eqref|footnote|url|href|nonumber|hline|cline)\b
     (\[[^\]]*\])?
     (\{[^{}]*\})*
     """,
     re.IGNORECASE | re.VERBOSE,
+)
+
+# citations -> generic placeholders
+# \citet{...} -> PAPER
+_CITE_PAPER = re.compile(
+    r"\\citet(\[[^\]]*\])?(\{[^{}]*\})*",
+    re.IGNORECASE,
+)
+
+# \cite{...}, \citep{...} -> AUTHOR
+_CITE_AUTHOR = re.compile(
+    r"\\citep?(\[[^\]]*\])?(\{[^{}]*\})*",
+    re.IGNORECASE,
 )
 
 
@@ -66,12 +79,17 @@ def strip_latex_prose(text: str) -> str:
         # strip inline bits and unwrap readable content
         line = _INLINE_MATH.sub(" ", line)
         line = _CMD_DROP.sub(" ", line)
+        # normalize citations
+        line = _CITE_PAPER.sub(" PAPER ", line)
+        line = _CITE_AUTHOR.sub(" AUTHOR ", line)
+        # remove leftover braces after AUTHOR or PAPER
+        line = re.sub(r"\b(AUTHOR|PAPER)\s*\{[^{}]*\}", r"\1", line)
         line = _unwrap_text_commands(line)
         line = _MULTI_SPACE.sub(" ", line).strip(" ,.;")
         if line:
             lines.append(line)
     # join to paragraphs; leave periods to help sentencizer
-    return ".\n".join(lines)
+    return " ".join(lines)
 
 
 # optional: minimal sentencizer (no downloads)

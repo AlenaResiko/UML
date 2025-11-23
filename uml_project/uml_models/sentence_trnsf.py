@@ -1,3 +1,7 @@
+"""
+Sentence Transformer code - used in notebooks/training/aksel/S_Bert.ipynb
+"""
+
 import pathlib
 
 from sentence_transformers import SentenceTransformer, evaluation, losses, models

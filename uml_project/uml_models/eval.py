@@ -1,3 +1,7 @@
+"""
+Evaluation utilities for UML models. Used in notebooks/training/aksel/S_Bert_Eval.ipynb
+"""
+
 import numpy as np
 import pandas as pd
 from sentence_transformers import InputExample, SentenceTransformer, evaluation

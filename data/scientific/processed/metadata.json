@@ -13,9 +13,9 @@
     "corpus": "scientific_papers",
     "doc_id": "t_sne_exaggerates_clusters_provably__related_work",
     "sent_index": 0,
-    "sentence": "There are two notably distinct ways of contextualizing t-SNE, the data visualization method introduced by PAPER .",
+    "sentence": "There are two notably distinct ways of contextualizing t-SNE, the data visualization method introduced by PAPER ",
     "split": "train",
-    "token_count": 17
+    "token_count": 16
   },
   "num_documents": 1,
   "num_sentences": 18

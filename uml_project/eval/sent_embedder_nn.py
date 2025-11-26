@@ -1,6 +1,8 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModel
+from transformers.models.bert.modeling_bert import BertModel
 
 from uml_project.torch_device import DEVICE_LITERAL
 
@@ -22,6 +24,8 @@ class SentenceEmbedder(nn.Module):
 
     This motivates training schemes where we freeze one part and optimize the other.
     """
+
+    enc: BertModel
 
     def __init__(
         self,
@@ -70,7 +74,7 @@ class SentenceEmbedder(nn.Module):
         for p in self.projection.parameters():
             p.requires_grad = True
 
-    def forward(self, input_ids, attention_mask, return_encoder_output: bool = False):
+    def forward(self, input_ids: torch.Tensor, attention_mask: torch.Tensor, return_encoder_output: bool = False):
         """
         Encode batch of tokenized sentences and return normalized embeddings.
 

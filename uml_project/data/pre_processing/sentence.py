@@ -12,14 +12,15 @@ Take a string input 'text' and return a numpy array of pre-processed sentences.
 """
 
 import re
-import numpy as np
-from typing import Literal
 from collections.abc import Iterable
+from typing import Literal
+
+import numpy as np
 import spacy
 from spacy.language import Language
 
 IGNORE_SENTENCE_START_CHARS = set("!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~")
-from uml_project.data.pre_processing.latex_helper import strip_latex_prose, latex_to_clean_sentences
+from uml_project.data.pre_processing.latex_helper import latex_to_clean_sentences, strip_latex_prose
 
 
 # ---------- main API ----------

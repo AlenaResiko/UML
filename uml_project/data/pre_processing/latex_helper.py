@@ -1,6 +1,7 @@
 import re
-import spacy
+
 import numpy as np
+import spacy
 from spacy.language import Language
 
 # ---------- compile once ----------

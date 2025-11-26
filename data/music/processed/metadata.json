@@ -1,24 +1,24 @@
 {
-  "columns": [
-    "corpus",
-    "album",
-    "doc_id",
-    "sent_index",
-    "sentence",
-    "split",
-    "token_count"
-  ],
-  "corpus_name": "taylor_swift_albums",
-  "description": "Sentence-level dataset built from Taylor Swift album lyrics (.txt files).",
-  "example_entry": {
-    "album": "1989",
-    "corpus": "taylor_swift_albums",
-    "doc_id": "1989_Booklet_",
-    "sent_index": 0,
-    "sentence": "The drought was the very worst (Oh-oh, oh-oh)",
-    "split": "train",
-    "token_count": 8
-  },
-  "num_documents": 392,
-  "num_sentences": 47264
+    "corpus_name": "taylor_swift_albums",
+    "description": "Sentence-level dataset built from Taylor Swift album lyrics (.txt files).",
+    "num_documents": 392,
+    "num_sentences": 47264,
+    "columns": [
+        "corpus",
+        "album",
+        "doc_id",
+        "sent_index",
+        "sentence",
+        "split",
+        "token_count"
+    ],
+    "example_entry": {
+        "corpus": "taylor_swift_albums",
+        "album": "1989",
+        "doc_id": "1989_Booklet_",
+        "sent_index": 0,
+        "sentence": "The drought was the very worst (Oh-oh, oh-oh)",
+        "split": "train",
+        "token_count": 8
+    }
 }

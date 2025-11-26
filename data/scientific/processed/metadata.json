@@ -1,22 +1,22 @@
 {
-  "columns": [
-    "corpus",
-    "doc_id",
-    "sent_index",
-    "sentence",
-    "split",
-    "token_count"
-  ],
-  "corpus_name": "scientific_papers",
-  "description": "Sentence-level dataset built from parsed scientific papers.",
-  "example_entry": {
-    "corpus": "scientific_papers",
-    "doc_id": "t_sne_exaggerates_clusters_provably__related_work",
-    "sent_index": 0,
-    "sentence": "There are two notably distinct ways of contextualizing t-SNE, the data visualization method introduced by PAPER .",
-    "split": "train",
-    "token_count": 17
-  },
-  "num_documents": 1,
-  "num_sentences": 18
+    "corpus_name": "scientific_papers",
+    "description": "Sentence-level dataset built from parsed scientific papers.",
+    "num_documents": 143,
+    "num_sentences": 7202,
+    "columns": [
+        "corpus",
+        "doc_id",
+        "sent_index",
+        "sentence",
+        "split",
+        "token_count"
+    ],
+    "example_entry": {
+        "corpus": "scientific_papers",
+        "doc_id": "a_neural_network_solves_explains_and_generates_university_math_problems_by_program_synthesis_and_few_shot_learning_at_human_level__generation_18_01",
+        "sent_index": 0,
+        "sentence": "1 & The rate of change of the volume of a sphere is ",
+        "split": "train",
+        "token_count": 13
+    }
 }

@@ -54,6 +54,7 @@ def define_sentence(
     if latex_mode == "sentences":
         sents = latex_to_clean_sentences(text, nlp=nlp).tolist()
         sents = _dedupe_consecutive(sents, casefold=dedupe_case_insensitive)
+        sents = _remove_trailing(sents)
         return np.array(sents, dtype=object)
 
     if latex_mode == "strip":
@@ -78,6 +79,7 @@ def define_sentence(
                 sentences.append(line)
 
     sentences = _dedupe_consecutive(sentences, casefold=dedupe_case_insensitive)
+    sentences = _remove_trailing(sentences)
     return np.array(sentences, dtype=object)
 
 
@@ -106,6 +108,14 @@ _EMBED_JUNK = re.compile(r"^\s*\d+\s*Embed\s*$", re.I)
 _EMBED_SUFFIX = re.compile(r"\s*\S*Embed\b\"?$", re.I)
 _MULTI_SPACE = re.compile(r"\s+")
 _END_PUNCT = re.compile(r"[.!?]")
+
+
+def _remove_trailing(strings: list[str]):
+    """
+    NOTE call this AFTER generating sentences - removing trailing period pre-emptively will cause parsing to fail
+    """
+    strings = [s.strip(".") for s in strings]
+    return strings
 
 
 def _clean(s: str) -> str:

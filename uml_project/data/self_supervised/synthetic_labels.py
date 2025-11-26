@@ -6,12 +6,13 @@ TODO do we want sigmoid-based similarity rather than linear?
 """
 
 from __future__ import annotations
+
 from functools import cache
 from typing import Any
-from numpy.typing import NDArray
+
 import numpy as np
 import pandas as pd
-
+from numpy.typing import NDArray
 
 try:
     from typing import TypedDict, Unpack

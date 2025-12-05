@@ -1,112 +1,118 @@
-import torch.nn as nn
-import torch.nn.functional as F
-from transformers import AutoModel
+from datasets import load_dataset
+from datasets import load_dataset, DatasetDict, load_from_disk  # Import load_from_disk
+import random
+from torch.utils.data import Dataset
+
+# # ------------------------
+# # Utilities / Dataset
+# # ------------------------
 
 
-class SentenceEmbedder(nn.Module):
+class SentenceCorpus:
     """
-    BERT-based sentence embedder with mean-pooling or cls pooling.
-    The model is built so passing the same input twice with dropout yields different embeddings
-    (SimCSE unsupervised trick).
+    Holder for a corpus of sentences with their document and position info.
+    Input: list of documents, where each document is list[str] (sentences in order).
+    This lets us define 'neighbor' sentences (within a distance window).
+    """
 
-    We explicitly separate:
-      - the encoder (self.enc): maps tokens -> hidden states
-      - the pooler/projection (self.projection): maps hidden states -> low-dim sentence embedding
+    def __init__(self, docs: list[list[str]]):
+        self.docs = docs
+        # flatten to a list of (doc_id, sent_idx, text)
+        self.flat = []
+        for d_id, doc in enumerate(docs):
+            for s_idx, text in enumerate(doc):
+                self.flat.append((d_id, s_idx, text))
+        self.N = len(self.flat)
 
-    Following Wang et al. (2023), the performance loss in low-dimensional settings can be
-    understood as the sum of:
-      - Performance Loss of the Encoder
-      - Performance Loss of the Pooler
+    def get_sentence(self, flat_idx: int) -> str:
+        return self.flat[flat_idx][2]
 
-    This motivates training schemes where we freeze one part and optimize the other.
+    def neighbor_indices(self, flat_idx: int, max_dist: int = 10) -> list[int]:
+        """Return indices of sentences within distance < max_dist in same document (excluding itself)."""
+        d_id, s_idx, _ = self.flat[flat_idx]
+        doc = self.docs[d_id]
+        lo = max(0, s_idx - max_dist + 1)
+        hi = min(len(doc) - 1, s_idx + max_dist - 1)
+        if lo <= hi:
+            for j in range(lo, hi + 1):
+                if j == s_idx:
+                    continue
+                # map (d_id, j) back to flat index: we can scan (cheap once) or build index map
+                # Let's build mapping once:
+            # we'll use a mapping built in constructor
+        return []  # unused; dataset uses precomputed mapping
+
+
+class ContrastiveSentenceDataset(Dataset):
+    """
+    Dataset returning an anchor index. The collate function constructs multiple text inputs:
+      - anchor_text (used twice for dropout augmentations in model forward)
+      - neighbor_texts (0..k positives from nearby sentences)
+    The collator will produce tokenized batches.
     """
 
     def __init__(
-        self, model_name="bert-base-uncased", pooling: str = "mean", device="cuda", proj_size: int | None = None
+        self,
+        docs: list[list[str]],
+        neighbor_window: int = 10,
+        num_neighbors: int = 1,
+        sample_neighbors_prob: float = 1.0,
     ):
-        super().__init__()
-        assert pooling in ("mean", "cls")
-        self.device = device
-        self.enc = AutoModel.from_pretrained(model_name)
-        self.pooling = pooling
-        hidden_size = self.enc.config.hidden_size
-
-        # Projection head = "pooler" in the Wang et al. sense
-        if proj_size is None or proj_size == hidden_size:
-            # No separate projection if proj_size is None or matches hidden_size
-            self.projection = nn.Identity()
-            self.proj_size = hidden_size
-        else:
-            self.projection = nn.Sequential(
-                nn.Linear(hidden_size, hidden_size),  # Optional intermediate layer
-                nn.Tanh(),  # Or ReLU or other activation
-                nn.Linear(hidden_size, proj_size),
-            )
-            self.proj_size = proj_size
-
-        self.to(device)
-
-    # --- NEW: convenience methods to (un)freeze encoder vs pooler ---
-
-    def freeze_encoder(self):
-        for p in self.enc.parameters():
-            p.requires_grad = False
-
-    def unfreeze_encoder(self):
-        for p in self.enc.parameters():
-            p.requires_grad = True
-
-    def freeze_pooler(self):
-        for p in self.projection.parameters():
-            p.requires_grad = False
-
-    def unfreeze_pooler(self):
-        for p in self.projection.parameters():
-            p.requires_grad = True
-
-    def forward(self, input_ids, attention_mask, return_encoder_output: bool = False):
         """
-        Encode batch of tokenized sentences and return normalized embeddings.
-
-        Args:
-            input_ids, attention_mask: tensors (batch, seq_len)
-            return_encoder_output:
-                - False (default): return final pooled+projected embedding (pooler output)
-                - True: return a tuple (encoder_embedding, pooler_embedding)
-                  where encoder_embedding is the pooled encoder output before projection,
-                  and pooler_embedding is the final low-dim embedding.
-
-        Returns:
-            If return_encoder_output is False:
-                z: L2-normalized embeddings (batch, proj_size)
-            If True:
-                (enc_norm, z): both L2-normalized, shapes (batch, H) and (batch, proj_size)
+        docs: list of documents (each is list of sentences)
+        neighbor_window: maximum sentence distance to consider neighbor (distance < neighbor_window)
+        num_neighbors: number of neighbor positives to sample per anchor (if available)
+        sample_neighbors_prob: probability to include neighbor positives (for mixing supervised/unsupervised)
         """
-        outputs = self.enc(
-            input_ids=input_ids, attention_mask=attention_mask, return_dict=True, output_hidden_states=True
-        )
-        last_hidden = outputs.last_hidden_state  # (B, L, H)
+        self.docs = docs
+        self.corpus = SentenceCorpus(docs)
+        self.num_neighbors = num_neighbors
+        self.neighbor_window = neighbor_window
+        self.sample_neighbors_prob = sample_neighbors_prob
 
-        if self.pooling == "mean":
-            # mean pooling over tokens with attention mask
-            mask = attention_mask.unsqueeze(-1).type_as(last_hidden)  # (B, L, 1)
-            summed = (last_hidden * mask).sum(1)  # (B, H)
-            denom = mask.sum(1).clamp(min=1e-9)
-            pooled = summed / denom  # encoder-level sentence embedding
-        elif self.pooling == "cls":
-            pooled = last_hidden[:, 0]
-        else:
-            raise ValueError(f"Unknown pooling mode: {self.pooling}")
+        # build mapping (doc_id, sent_idx) -> flat index for quick neighbor lookup
+        self.doc_index_starts = []
+        flat_idx = 0
+        for doc in docs:
+            self.doc_index_starts.append(flat_idx)
+            flat_idx += len(doc)
 
-        z = self.projection(pooled)
-        z = F.normalize(z, p=2, dim=1)
+        # map (doc_id, sent_idx) -> flat_index:
+        self.doc_pos_to_flat = {}
+        flat = 0
+        for d_id, doc in enumerate(docs):
+            for s_idx, _ in enumerate(doc):
+                self.doc_pos_to_flat[(d_id, s_idx)] = flat
+                flat += 1
+        self.N = flat
 
-        if return_encoder_output:
-            enc_norm = F.normalize(pooled, p=2, dim=1)
-            return enc_norm, z
+    def __len__(self):
+        return self.N
 
-        return z
+    def sample_neighbors_for_flat_idx(self, flat_idx: int) -> list[int]:
+        d_id, s_idx, _ = self.corpus.flat[flat_idx]
+        doc = self.docs[d_id]
+        lo = max(0, s_idx - (self.neighbor_window - 1))
+        hi = min(len(doc) - 1, s_idx + (self.neighbor_window - 1))
+        candidates = [j for j in range(lo, hi + 1) if j != s_idx]
+        if not candidates:
+            return []
+        k = min(self.num_neighbors, len(candidates))
+        sampled = random.sample(candidates, k)
+        flat_sampled = [self.doc_pos_to_flat[(d_id, j)] for j in sampled]
+        return flat_sampled
 
-    def get_sentence_embedding_dimension(self):
-        """Returns the dimension of the final sentence embeddings after pooling and projection."""
-        return self.proj_size
+    def __getitem__(self, idx: int):
+        """
+        Returns an item describing the anchor and indices of positives:
+          {
+            'anchor_idx': int,
+            'anchor_text': str,
+            'neighbor_pos_indices': List[int]  # could be empty
+          }
+        """
+        anchor_text = self.corpus.get_sentence(idx)
+        neighbor_indices = []
+        if random.random() < self.sample_neighbors_prob:
+            neighbor_indices = self.sample_neighbors_for_flat_idx(idx)
+        return {"anchor_idx": idx, "anchor_text": anchor_text, "neighbor_pos_indices": neighbor_indices}

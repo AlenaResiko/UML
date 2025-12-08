@@ -61,8 +61,33 @@
 ALENA
 
 \subsection{Related Work}
-AKSEL (add bibliography entries in the end of the doc, use references like this: \cite{wang2020})
+Recent work on sentence embeddings has focused on understanding and improving the
+geometry of representation spaces. I'll briefly summarize the papers we referenced as we
+ideated and implemented our project.
 
+Wang \& Isola (2020) \cite{wang2020contrastive} demonstrate that contrastive learning optimizes two
+competing objectives—alignment of similar examples and uniformity of representations on
+the hypersphere—providing a geometric framework that underlies many modern embedding
+methods. Gao et al. (2021) \cite{gao2021simcse} introduce SimCSE, showing that simple
+dropout-based positive pairs produce state-of-the-art unsupervised sentence embeddings,
+with supervised variants further improving semantic similarity performance. Reimers \&
+Gurevych (2019) \cite{reimers2019sentencebert} propose Sentence-BERT, a siamese BERT
+architecture enabling efficient cosine-similarity–based retrieval and establishing a
+strong benchmark for supervised semantic embedding tasks.
+
+Li et al. (2020) \cite{li2020sentenceembeddingdim} investigate the intrinsic
+dimensionality of contextual embeddings, finding strong anisotropy and proposing
+geometric corrections to improve isotropy and downstream performance. Wang \& Liu (2021)
+\cite{wang2021divergence} analyze the divergence properties of InfoNCE-style losses,
+explaining how different contrastive objectives induce distinct geometric structures in
+embedding space. Chen et al. (2020) \cite{chen2020simclr} introduce SimCLR, a
+vision-based contrastive framework whose insights—especially the role of augmentations
+and projection heads—directly inspired modern sentence-level contrastive methods. Amit et
+al. (2021) \cite{amit2021intrinsicdim} tie generalization performance to intrinsic
+dimensionality, suggesting that models adapt their effective dimensionality to task
+complexity. Finally, Hu et al. (2023) \cite{ma2023lora} present LoRA, showing that
+learned low-rank subspaces can efficiently adapt large language models—reinforcing the
+broader theme that meaningful linguistic structure often lies in low-dimensional manifolds.
 \section{Methodology}
 ALENA (except for data preprocessing)
 
@@ -86,7 +111,13 @@ within a document form positive pairs. The corpora are token-matched for trainin
 2) Nakul Verma's ML papers (long, information-dense)
 
 \subsection{Data preprocessing}
-AKSEL
+Downloading, cleaning, and formatting the datasets into sentence-level documents was a
+multistep process.
+
+For the lyrics dataset, there was a kaggle repository containing the entire Taylor Swift
+discography, which we used for our lyrics corpus. The cleanup included removing
+sequential duplicate sentences, filtering out song and album metadata, and splitting the
+lyrics into individual sentences using the NLTK sentence tokenizer.
 
 \subsection{Training objective}
 We train unsupervised SimCSE-style contrastive models with multiple positive examples,
@@ -102,7 +133,7 @@ Step 2. Freeze encoder, train pooler (3 epochs).
 \begin{itemize}
 \item Geometry
 \begin{itemize}
-		\item Alignment and uniformity losses (Wang et al., 2020, \cite{wang2020}) on in-domain
+		\item Alignment and uniformity losses (Wang et al., 2020, \cite{wang2020contrastive}) on in-domain
 				and out-of-domain test sets. Alignment measures how close positive pairs are, and
 				uniformity captures how evenly embeddings are spread on the hypersphere.
 		\item t-SNE embeddings of sentences from songs and papers.

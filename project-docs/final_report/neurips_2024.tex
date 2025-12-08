@@ -63,7 +63,7 @@ ALENA
 \subsection{Related Work}
 Recent work on sentence embeddings has focused on understanding and improving the
 geometry of representation spaces. I'll briefly summarize the papers we referenced as we
-ideated and implemented our project.
+brainstormed and implemented our project.
 
 Wang \& Isola (2020) \cite{wang2020contrastive} demonstrate that contrastive learning optimizes two
 competing objectives—alignment of similar examples and uniformity of representations on
@@ -119,6 +119,10 @@ discography, which we used for our lyrics corpus. The cleanup included removing
 sequential duplicate sentences, filtering out song and album metadata, and splitting the
 lyrics into individual sentences using the NLTK sentence tokenizer.
 
+For the papers dataset, we used the arXiv API to download Nakul Verma's papers in pure latex form. There was
+substantial cleaning and processing work involved from that point. First, we removed latex commands,
+equations, figures, tables, and references using regex patterns. Next, we split the cleaned text into
+sentences. These two actions required a fair amount of user judgement, and dimished the size of the usable corpus.
 \subsection{Training objective}
 We train unsupervised SimCSE-style contrastive models with multiple positive examples,
 sampling local neighbors within each document. Following Wang et al., 2023
@@ -247,8 +251,16 @@ corpus size, and contrastive neighborhood definition. In addition, while STS-B S
 rank results provide an insightful semantic probe, it represents only one notion of
 transfer learning performance.
 
-AKSEL
+\paragraph*{Evaluation Criteria} Selection of evaluation metrics (alignment, uniformity, STS-B Spearman rank)
+was an area of much thought and discussion. Drawing inspiration from Gao et al. \cite{gao2021simcse}, we
+explored enriching our unlabeled dataset with self-supervised positive pairs. We landed on sentence proximity
+as a straightforward and effective method to generate these pairs without additional labeling.
 
+\paragraph*{Contrasting Loss Finetuning} By design, the constrastive loss finetuning only seeks to optimize
+local structure and better distribute embeddings along the unit hypersphere. However, the inherent upper
+bound on this optimization objective comes from the pre-trained representations provided by BERT. Our
+procedure is not designed to, nor is it likely to, drastically alter the global structure of the embedding
+space. Hence, this route will not likely yield a dramatic improvement in sentence embedding, or revolutionize the field.
 \subsection{Future Directions}
 For future work, we would like to explore \textbf{additional domains} (such as news, code
 comments etc.), try other \textbf{embedding models beyond BERT}, and use

@@ -240,7 +240,7 @@ that the frozen BERT encoder is initially better suited for academic text.
 %/ replace with aksel's combined results for both songs and papers
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.6\linewidth]{Images/ablation.png}
+\includegraphics[width=1.0\linewidth]{Images/ablation_2ax.png}
 \caption{Ablation study on the two-step training procedure.}
 \label{fig:ablation}
 \end{figure}
@@ -261,12 +261,26 @@ local structure and better distribute embeddings along the unit hypersphere. How
 bound on this optimization objective comes from the pre-trained representations provided by BERT. Our
 procedure is not designed to, nor is it likely to, drastically alter the global structure of the embedding
 space. Hence, this route will not likely yield a dramatic improvement in sentence embedding, or revolutionize the field.
+
+\paragraph*{Scope} Due to time and resource constraints, we limited out experiments to two esoteric domains
+of the english language. A more comprehensive study would include a much broader array of domains,
+self-labeling algorithms, and backbone architectures.
+
+\paragraph*{BERT} As our backbone, BERT-base-uncased is a well-established model for sentence embeddings.
+However, there are more recent encoder architectures (e.g., RoBERTa, DeBERTa, etc.) available for
+exploration. In addition, the past five years have seen a preponderance of investment into closed-source LLMs
+(e.g., GPT, Gemini, Grok, Claude, etc.) that may offer superior embedding capabilities (with the caveat that
+it's uncertain that cleanly demarcated encoder-decoder patterns exist in said closed models).
 \subsection{Future Directions}
 For future work, we would like to explore \textbf{additional domains} (such as news, code
-comments etc.), try other \textbf{embedding models beyond BERT}, and use
-\textbf{alternative training objectives} (for instance, non-contrastive methods).
+comments etc.), try other \textbf{embedding models beyond BERT}, use
+\textbf{alternative training objectives} (for instance, non-contrastive methods), enrich the suite of
+\textbf{evaluation methods}, and implement competing self-supervised \textbf{sentence pair labeling algorithms}.
 
-AKSEL
+Expanding the scope a bit, it would be interesting to move beyond all-purpose sentence embeddings and explore
+\textbf{task-specific embeddings} and \textbf{multimodal embeddings}, modeling language in a
+\textbf{hierarchical manner}, moving beyond euclidean spaces into \textbf{non-euclidean geometries}, and
+exploring the notion of \textbf{intrinsic dimensionality}.
 
 \section{Conclusion}
 

@@ -73,8 +73,8 @@ representations to a target dimension $d \in \{4,16,64,256,767\}$ followed by $L
 \begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.6\linewidth]{Images/bert_pooler.png}
-		\label{fig:model_arch}
 		\caption{BERT+Pooler architecture. Image credit: https://arxiv.org/pdf/2310.15285.}
+		\label{fig:model_arch}
 \end{figure}
 
 \subsection{Training domains}
@@ -167,8 +167,8 @@ across domains.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\linewidth]{Images/all_align_unif.png}
-\label{fig:losses}
 \caption{Uniformity and alignment losses.}
+\label{fig:losses}
 \end{figure}
 
 \subsection{Songs and Papers Clusters Embedded with t-SNE}
@@ -184,8 +184,8 @@ which is consistent with the concurrent improvement in STS-B performance.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\linewidth]{Images/tsne_comp.png}
-\label{fig:tsne}
 \caption{t-SNE results for 4D and 16D BERT+pooler models trained on songs.}
+\label{fig:tsne}
 \end{figure}
 
 \subsection{Ablation on the Training Procedure}
@@ -206,8 +206,8 @@ that the frozen BERT encoder is initially better suited for academic text.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.6\linewidth]{Images/ablation.png}
-\label{fig:ablation}
 \caption{Ablation study on the two-step training procedure.}
+\label{fig:ablation}
 \end{figure}
 
 \subsection{Challenges and Limitations}
@@ -261,26 +261,8 @@ Snoeck, for their feedback on our ideas.
 \section*{Code Availability}
 All our code can be found at \hyperlink{Github}{https://github.com/AlenaResiko/UML}.
 
-\begin{thebibliography}{00}
-
-\bibitem{wang2023}
-Wang, Hongwei, Hongming Zhang, and Dong Yu. "On the dimensionality of sentence
-embeddings." \textit{arXiv preprint arXiv:2310.15285} (2023).
-
-\bibitem{wang2020}
-Wang, Tongzhou, and Phillip Isola. "Understanding contrastive representation learning
-through alignment and uniformity on the hypersphere." International conference on machine
-learning. PMLR, 2020.
-
-\bibitem{sbert}
-Reimers, Nils, and Iryna Gurevych. "Sentence-bert: Sentence embeddings using siamese
-bert-networks." \textit{arXiv preprint arXiv:1908.10084} (2019).
-
-\bibitem{simcse}
-Gao, Tianyu, Xingcheng Yao, and Danqi Chen. "Simcse: Simple contrastive learning of
-sentence embeddings." \textit{arXiv preprint arXiv:2104.08821} (2021).
-
-\end{thebibliography}
+\bibliographystyle{plainnat}
+\bibliography{references}
 
 \raggedbottom
 

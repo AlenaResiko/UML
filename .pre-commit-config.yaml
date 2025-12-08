@@ -7,7 +7,6 @@ repos:
     rev: v0.5.4
     hooks:
       - id: tex-fmt
-        args: ["--wraplen=100"]
   - repo: https://github.com/myint/autoflake
     rev: v2.2.1
     hooks:

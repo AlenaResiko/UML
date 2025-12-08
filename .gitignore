@@ -95,3 +95,4 @@ vault/
 !data/
 wandb/
 checkpoints/
+*.out

@@ -20,7 +20,7 @@
 
 \begin{document}
 
-\author{%
+\author{
   Alena Chan \\
   Department of Computer Science \\
   Columbia University \\
@@ -44,7 +44,8 @@
 
 \begin{abstract}
 		\textit{How much embedding dimensionality is needed for a given corpus? Can a model
-		trained on a simpler domain transfer effectively to semantically richer tasks?}
+				trained on a simpler domain transfer effectively to semantically richer tasks? How does sensitivity to
+		embeddings dimensionality vary across corpora?}
 
 		To answer these questions, we study how domain and embedding dimensionality interact in
 		unsupervised sentence encoders. Using two extreme corpora, \textbf{Taylor Swift lyrics
@@ -58,113 +59,118 @@
 \end{abstract}
 
 \section{Introduction}
-% Recently there have been much progress in improving quality of sentence embeddings, like BERT[cite] family of models. However, training such requires vast amounts of data (billions of words for BERT), and these embeddings are later used per se. BERT embeddings are either used, as is, in 768D, or target dimension is determined by memory or compute limits. \\
-% Efficient embedding is determined by data in question, here it is natural that different "topics" and "concepts" would be best represented through different maps. \\
-% We consider how much subspace of English sentences related to two chosen topics (\textit{pop songs} and \textit{scientific papers}) capture semantic relations pertaining to general English, and how much knowledge about structure of one subspace transfers to the other. In addition, we explore intrinsic dimensionality of these subspaces. \\
-% To validate our findings we compare performance of embedding transfer across tasks. We apply two-step training method for sentence representation learning models. \\
-% We introduce tools for future evaluation of concept-dimensionality. To propose metrics to analyze efficiency of topic embeddings, in terms of capturing semantic meaning and ability to transfer to general language. We also give practical way to split text into meaningful units and assign similarity in self-supervised way. \\
-% Efficient embedding is a function of both raw data and target task. We evaluate embeddings on sematic similarity task as it is fundamental to NLP, and has long been used as training objective in language models and as language comprehension metrics. % citation?
-% What concepts allows for smaller-dimensional representations to still capture meaning? How sensitive is representation quality slightly suboptimal dimensionality for each concept?
-Sentence embeddings are mappings from high-dimensional linguistic signals to lower-dimensional structures whose geometry captures the semantic meanings of sentences. Latent space embeddings are crucial in NLP tasks. Recent progress—including the BERT [cite] family of models—has significantly improved sentence embedding quality. However, training these models requires vast amounts of data (billions of words for BERT), and the resulting embeddings are typically used as-is. In practice, BERT embeddings are either retained in their original 768-dimensional form or reduced only according to memory or compute constraints.
-Yet efficient embedding dimensionality is determined not merely by model architecture but also by the nature of the data itself. Different topics and conceptual domains may naturally admit representations that lie in different effective subspaces.
-We investigate how much the subspaces associated with two distinct English domains—pop songs and scientific papers—capture semantic relations relevant to general English, and to what extent structural information learned in one subspace transfers to the other. In addition, we examine the intrinsic dimensionality of these topic-specific subspaces.
-To validate our findings, we compare task performance under various forms of embedding transfer. We train sentence representation models using a two-step procedure and evaluate their ability to generalize across domains.
-We also introduce tools for future evaluation of concept-dimensionality. Our goal is to provide metrics for analyzing the efficiency of topic-specific embeddings in terms of how well they capture semantic meaning and how effectively they transfer to broader language understanding. Moreover, we propose a practical method for segmenting text into meaningful units and assigning semantic similarity in a self-supervised manner.
+Sentence embeddings are mappings from high-dimensional linguistic signals to lower-dimensional structures
+whose geometry captures the semantic meanings of sentences. Latent space embeddings are crucial in NLP tasks.
+Recent progress—including BERT \cite{devlin2019bert} for token embeddings and then Sentence-BERT
+\cite{reimers2019sentencebert} for sentence embeddings—has significantly improved sentence embedding quality.
+In practice, resulting embeddings are typically used per se (in 768D or 1024D for BERT-based models) without
+any consideration given to decreasing the compute or memory on downstream tasks via a lower embedding
+dimensionality. However, the nature of the data itself and the downstream task might require a different
+dimensionality, which could make the resulting embeddings not only more efficient but also useful.
 
-Efficient embedding dimensionality is a function of both the raw data and the target task. We evaluate embeddings on a semantic similarity task, as it is foundational in NLP and has long served both as a training objective for language models and as a measure of language comprehension.
+We train sentence representation models using a two-step procedure and evaluate their ability to generalize
+across domains. Our evaluation steps include 1) assessing transfer learning of the models trained on one
+particular dataset (either pop songs or scientific papers) on general, out-of-distribution tasks, and 2) the
+resulting geometry of in-domain and out-of-domain data embedded with our trained models. Through this
+analysis, we can also infer the intrinsic dimensionality of the topic-specific data used to train the models
+under evaluation.
 
-This raises two central questions: Which conceptual domains allow for smaller-dimensional representations that still capture meaning? And how sensitive is representation quality to slight deviations from the optimal dimensionality for each concept?
+On a high level, we take a step towards answering the following questions: Which conceptual domains
+(represented by the data used to train our models) allow for smaller-dimensional representations that still
+capture meaning and retain transfer learning abilities? How much can we decrease the embedding dimension
+while retaining useful representations?
 
-\subsection{Related Work}
-Recent work on sentence embeddings has focused on understanding and improving the
-geometry of representation spaces. I'll briefly summarize the papers we referenced as we
-brainstormed and implemented our project.
+\section*{Related Work}
+Widespread adoption of transformer encoders began with BERT \cite{devlin2019bert}, which learns deep
+contextual token representations that can be repurposed for sentence-level meaning. Sentence-BERT
+\cite{reimers2019sentencebert} extends BERT with a siamese architecture and pooling scheme, enabling
+efficient cosine-similarity retrieval and establishing a strong supervised benchmark for sentence embeddings.
+Li et al. \cite{li2020sentenceembeddingdim} analyze sentence embeddings produced by pretrained language
+models, showing strong anisotropy and proposing geometric corrections to improve isotropy and downstream task
+performance.
 
-Wang \& Isola (2020) \cite{wang2020contrastive} demonstrate that contrastive learning optimizes two
-competing objectives—alignment of similar examples and uniformity of representations on
-the hypersphere—providing a geometric framework that underlies many modern embedding
-methods. Gao et al. (2021) \cite{gao2021simcse} introduce SimCSE, showing that simple
-dropout-based positive pairs produce state-of-the-art unsupervised sentence embeddings,
-with supervised variants further improving semantic similarity performance. Reimers \&
-Gurevych (2019) \cite{reimers2019sentencebert} propose Sentence-BERT, a siamese BERT
-architecture enabling efficient cosine-similarity–based retrieval and establishing a
-strong benchmark for supervised semantic embedding tasks.
+Contrastive learning provides the main algorithmic backbone for modern sentence encoders. Wang and Isola
+\cite{wang2020contrastive} show that contrastive objectives implicitly trade off two geometric
+pressures—alignment of positive pairs and uniformity of embeddings on the hypersphere—offering a framework we
+directly use to interpret our models. Wang and Liu \cite{wang2021divergence} further study the behavior of
+contrastive losses such as InfoNCE under different design choices, explaining how temperature, sampling, and
+margin parameters induce distinct embedding geometries. Building on these ideas, SimCSE \cite{gao2021simcse}
+introduces a simple but powerful contrastive objective for sentences, where dropout-generated views serve as
+positive pairs and hard negatives emerge naturally from in-batch sampling.
 
-Li et al. (2020) \cite{li2020sentenceembeddingdim} investigate the intrinsic
-dimensionality of contextual embeddings, finding strong anisotropy and proposing
-geometric corrections to improve isotropy and downstream performance. Wang \& Liu (2021)
-\cite{wang2021divergence} analyze the divergence properties of InfoNCE-style losses,
-explaining how different contrastive objectives induce distinct geometric structures in
-embedding space. Chen et al. (2020) \cite{chen2020simclr} introduce SimCLR, a
-vision-based contrastive framework whose insights—especially the role of augmentations
-and projection heads—directly inspired modern sentence-level contrastive methods. Amit et
-al. (2021) \cite{amit2021intrinsicdim} tie generalization performance to intrinsic
-dimensionality, suggesting that models adapt their effective dimensionality to task
-complexity. Finally, Hu et al. (2023) \cite{ma2023lora} present LoRA, showing that
-learned low-rank subspaces can efficiently adapt large language models—reinforcing the
-broader theme that meaningful linguistic structure often lies in low-dimensional manifolds.
+Recent work also focuses on the dimensional structure of sentence representations. Wang et al.
+\cite{wang2023} study the performance of low-dimensional sentence embeddings from pretrained encoders,
+decomposing the impact of the encoder and pooler and showing that substantial dimensionality reduction is
+often possible without dramatic loss in quality. Amit et al. \cite{amit2021intrinsicdim} investigate how
+intrinsic dimensionality governs generalization, arguing that effective models adapt their representation
+dimensionality to the complexity of the underlying data manifold—a perspective that motivates our focus on
+how different corpora support useful low-dimensional sentence embeddings.
 \section{Methodology}
-We use contrastive learning described in SimCSE [cite]. SimCSE's training objective is to pull positive pairs together in embedding space, and push negative pairs apart. In our context, positive and negative pairs are defined by closeness in the same text, creating self-supervised setting. SimCSE was previously shown successful on STS benchmarks and transfer tasks, which is why we use it as a main semantic meaning learning method. \\
+We use contrastive learning described in SimCSE \cite{gao2021simcse}. SimCSE's training objective is to pull
+positive pairs together in embedding space, and push negative pairs apart. In our context, positive and
+negative pairs are defined by closeness in the same text, creating self-supervised setting. SimCSE was
+previously shown successful on STS benchmarks and transfer tasks, which is why we use it as a main semantic
+meaning learning method. \\
 We training two architectures: encoder + pooler (BERT + feed-foward NN), encoder + projection (BERT + PCA).
 \subsection{Encoder + pooler}
 Here we briefly discuss implementation details, and all code is available. \\
-The encoder maps tokens to latent representations, and we use BERT for that.\\
-The pooler maps hidden states to low-dimensional embedding of sentences. \\
-In [cite], Wang et al. found that performance loss can be decomposed into separate encoder and pooler contributions, which is why we use two-step training procedure. First, we freeze parameters of pooler and fine-tune the encoder, achieving best version of BERT for this dataset; then, we freeze the encoder and train only pooler. This allows to reduce encoder loss and pooler loss sequentially. \\
-We load 'bert-base-uncased' weights from Hugging Face for encoder [cite], and construct a fully connected network with $hidden_size x hidden_size$ layer, tanh activation, $hidden_size x projection_size$ fully-connected layer (following Wang et al.). We apply mean pooling to aggregate token embeddings into sentences embeddings; note that BERT porduces position-aware token representations, so orderial information is not lost.\\ %@article{DBLP:journals/corr/abs-1810-04805,
-%   author    = {Jacob Devlin and
-%                Ming{-}Wei Chang and
-%                Kenton Lee and
-%                Kristina Toutanova},
-%   title     = {{BERT:} Pre-training of Deep Bidirectional Transformers for Language
-%                Understanding},
-%   journal   = {CoRR},
-%   volume    = {abs/1810.04805},
-%   year      = {2018},
-%   url       = {http://arxiv.org/abs/1810.04805},
-%   archivePrefix = {arXiv},
-%   eprint    = {1810.04805},
-%   timestamp = {Tue, 30 Oct 2018 20:39:56 +0100},
-%   biburl    = {https://dblp.org/rec/journals/corr/abs-1810-04805.bib},
-%   bibsource = {dblp computer science bibliography, https://dblp.org}
-% }
-%
-We train embeddings as follows. We apply SimCSE trick: a sentence passed as it and with dropout should have similar embeddings. For each anchor sentence, we find multipositive Normalized Temperature-scaled Cross-Entropy loss and optimize using Adam. \\
+The encoder maps tokens to latent representations, and we use BERT for that. The pooler maps hidden states to
+low-dimensional embedding of sentences. \\
+In \cite{wang2023} found that performance loss can be decomposed into separate encoder and pooler
+contributions, which is why we use two-step training procedure. First, we freeze parameters of pooler and
+fine-tune the encoder, achieving best version of BERT for this dataset; then, we freeze the encoder and train
+only pooler. This allows to reduce encoder loss and pooler loss sequentially. \\
+We load 'bert-base-uncased' weights from Hugging Face for encoder \cite{devlin2019bert}, and construct a
+fully connected network with hidden-size x hidden-size layer, tanh activation, hidden-size x projection-size
+fully-connected layer (following \cite{wang2023}). We apply mean pooling to aggregate token embeddings into
+sentences embeddings; note that BERT porduces position-aware token representations, so orderial information
+is not lost.\\
+We train embeddings as follows. We apply SimCSE trick: a sentence passed as it and with dropout should have
+similar embeddings. For each anchor sentence, we find multipositive Normalized Temperature-scaled
+Cross-Entropy loss and optimize using Adam. \\
 \subsection{Encoder + projection}
-Encoder is BERT followed by PCA.
+Encoder is BERT, followed by PCA. For given projection dimensionality $k$, we take first $k$ principal components.
 
 \subsection{Base model}
 \texttt{BERT-base-uncased} with mean pooling. A projection head maps pooled
 representations to a target dimension $d \in \{4,16,64,256,767\}$ followed by $L_2$ normalization.
 
 \begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.6\linewidth]{Images/bert_pooler.png}
-		\caption{BERT+Pooler architecture. Image credit: https://arxiv.org/pdf/2310.15285.}
-		\label{fig:model_arch}
+\centering
+\includegraphics[width=0.6\linewidth]{Images/bert_pooler.png}
+\caption{BERT+Pooler architecture. Image credit: https://arxiv.org/pdf/2310.15285.}
+\label{fig:model_arch}
 \end{figure}
 
 \subsection{Training domains}
-TODO: add why we choose these domains: to capture different styles + complexity + mode of communication; given drastically opposite fields, ability to capture indicates strong ability to generalize accross language tasks.\\
-
-Each song and each paper section is treated as one document, and neighboring sentences
-within a document form positive pairs. The corpora are token-matched for training compute parity:
+We choose domains to capture different styles, word frequency, mode of communication. Given these are
+opposite fields, ability to capture both indicates strong ability to generalize across topics in language.\\
+Each song and each paper section is treated as one document, and neighboring sentences within a document form
+positive pairs. The corpora are token-matched for training compute parity:
 
 1) Taylor Swift lyrics (short, repetitive, low-entropy)
 
 2) Nakul Verma's ML papers (long, information-dense)
 
-\subsection{Data preprocessing}
+We split text into sentences, which we consider smallest meaningfully-complete unit. Pre-processing
+methodology is dicussed below.
 
-TODO: explain why we look at sentence, not word level - bc semantically meaningful unit is sentence. possibly discuss how sentence notion is funky for songs. \\
+\subsection{Data preprocessing}
 
 Downloading, cleaning, and formatting the datasets into sentence-level documents was a multistep process.
 
-For the lyrics dataset, there was a kaggle repository containing the entire Taylor Swift discography, which we used for our lyrics corpus. The cleanup included removing sequential duplicate sentences, filtering out song and album metadata, and splitting the lyrics into individual sentences using the NLTK sentence tokenizer.
+For the lyrics dataset, there was a kaggle repository containing the entire Taylor Swift discography, which
+we used for our lyrics corpus. The cleanup included removing sequential duplicate sentences, filtering out
+song and album metadata, and splitting the lyrics into individual sentences using the NLTK sentence
+tokenizer. Each newline was treated as its own sentence.
 
-For the papers dataset, we used the arXiv API to download Nakul Verma's papers in pure latex form. There was substantial cleaning and processing work involved from that point. First, we removed latex commands, equations, figures, tables, and references using regex patterns. Next, we split the cleaned text into sentences. These two actions required a fair amount of user judgement, and dimished the size of the usable corpus. \\
+For the papers dataset, we used the arXiv API to download Nakul Verma's papers in pure latex form. There was
+substantial cleaning and processing work involved from that point. First, we removed latex commands,
+equations, figures, tables, and references using regex patterns. Next, we split the cleaned text into
+sentences. These two actions required a fair amount of user judgement, and dimished the size of the usable corpus. \\
 
-Given two corpora, we create pairs of similar sentences in self-supervised manner through assigning similarity indicator based on sentence distance.
+Given two corpora, we create pairs of similar sentences in self-supervised manner through assigning
+similarity indicator based on sentence distance.
 
 \subsection{Training objective}
 We train unsupervised SimCSE-style contrastive models with multiple positive examples,
@@ -180,10 +186,10 @@ Step 2. Freeze encoder, train pooler (3 epochs).
 \begin{itemize}
 \item Geometry
 \begin{itemize}
-		\item Alignment and uniformity losses (Wang et al., 2020, \cite{wang2020contrastive}) on in-domain
-				and out-of-domain test sets. Alignment measures how close positive pairs are, and
-				uniformity captures how evenly embeddings are spread on the hypersphere.
-		\item t-SNE embeddings of sentences from songs and papers.
+\item Alignment and uniformity losses (Wang et al., 2020, \cite{wang2020contrastive}) on in-domain
+and out-of-domain test sets. Alignment measures how close positive pairs are, and
+uniformity captures how evenly embeddings are spread on the hypersphere.
+\item t-SNE embeddings of sentences from songs and papers.
 \end{itemize}
 \item Transfer learning: STS-B Spearman rank correlations of sentence pair embeddings.
 \end{itemize}
@@ -345,8 +351,8 @@ target dimensionality changes.
 
 \subsection{Contributions of each team member}
 \begin{itemize}
-\item \textbf{A.C.}: BERT+pooler architecture implementation, BERT+PCA architecture
-implementation and evaluation on 4-767D, partial report write-up. % preprocessing?
+\item \textbf{A.C.}: Partial preprocessing, BERT+pooler contrast-and-freeze architecture implementation,
+BERT+PCA architecture implementation and evaluation on 4-767D, partial report write-up.
 \item \textbf{A.K-W.}: Data collection and preprocessing for both datasets, ablation
 studies on the BERT+pooler architecture for both datasets with training and evaluation on
 4-767D, partial report write-up.

@@ -45,7 +45,7 @@
 \begin{abstract}
 		\textit{How much embedding dimensionality is needed for a given corpus? Can a model
 				trained on a simpler domain transfer effectively to semantically richer tasks? How does sensitivity to
-		embeddings dimensionality vary across corpora?}
+		embedding dimensionality vary across corpora?}
 
 		To answer these questions, we study how domain and embedding dimensionality interact in
 		unsupervised sentence encoders. Using two extreme corpora, \textbf{Taylor Swift lyrics
@@ -63,7 +63,7 @@ Sentence embeddings are mappings from high-dimensional linguistic signals to low
 whose geometry captures the semantic meanings of sentences. Latent space embeddings are crucial in NLP tasks.
 Recent progress—including BERT \cite{devlin2019bert} for token embeddings and then Sentence-BERT
 \cite{reimers2019sentencebert} for sentence embeddings—has significantly improved sentence embedding quality.
-In practice, resulting embeddings are typically used per se (in 768D or 1024D for BERT-based models) without
+In practice, resulting embeddings are typically used as is (in 768D or 1024D for BERT-based models) without
 any consideration given to decreasing the compute or memory on downstream tasks via a lower embedding
 dimensionality. However, the nature of the data itself and the downstream task might require a different
 dimensionality, which could make the resulting embeddings not only more efficient but also useful.
@@ -80,60 +80,65 @@ On a high level, we take a step towards answering the following questions: Which
 capture meaning and retain transfer learning abilities? How much can we decrease the embedding dimension
 while retaining useful representations?
 
-\section*{Related Work}
+\section{Related Work}
 Widespread adoption of transformer encoders began with BERT \cite{devlin2019bert}, which learns deep
-contextual token representations that can be repurposed for sentence-level meaning. Sentence-BERT
+contextual token representations that can be repurposed for sentence-level embeddings. Sentence-BERT
 \cite{reimers2019sentencebert} extends BERT with a siamese architecture and pooling scheme, enabling
 efficient cosine-similarity retrieval and establishing a strong supervised benchmark for sentence embeddings.
-Li et al. \cite{li2020sentenceembeddingdim} analyze sentence embeddings produced by pretrained language
+\cite{li2020sentenceembeddingdim} analyze sentence embeddings produced by pretrained language
 models, showing strong anisotropy and proposing geometric corrections to improve isotropy and downstream task
 performance.
 
-Contrastive learning provides the main algorithmic backbone for modern sentence encoders. Wang and Isola
+Contrastive learning provides the main algorithmic backbone for modern sentence encoders.
 \cite{wang2020contrastive} show that contrastive objectives implicitly trade off two geometric
 pressures—alignment of positive pairs and uniformity of embeddings on the hypersphere—offering a framework we
-directly use to interpret our models. Wang and Liu \cite{wang2021divergence} further study the behavior of
+directly use to interpret our models. \cite{wang2021divergence} further study the behavior of
 contrastive losses such as InfoNCE under different design choices, explaining how temperature, sampling, and
 margin parameters induce distinct embedding geometries. Building on these ideas, SimCSE \cite{gao2021simcse}
 introduces a simple but powerful contrastive objective for sentences, where dropout-generated views serve as
 positive pairs and hard negatives emerge naturally from in-batch sampling.
 
-Recent work also focuses on the dimensional structure of sentence representations. Wang et al.
+Recent work also focuses on the dimensional structure of sentence representations.
 \cite{wang2023} study the performance of low-dimensional sentence embeddings from pretrained encoders,
 decomposing the impact of the encoder and pooler and showing that substantial dimensionality reduction is
-often possible without dramatic loss in quality. Amit et al. \cite{amit2021intrinsicdim} investigate how
+often possible without dramatic loss in quality. Their work served as our main reference for this study.
+\cite{amit2021intrinsicdim} investigate how
 intrinsic dimensionality governs generalization, arguing that effective models adapt their representation
 dimensionality to the complexity of the underlying data manifold—a perspective that motivates our focus on
 how different corpora support useful low-dimensional sentence embeddings.
 \section{Methodology}
-We use contrastive learning described in SimCSE \cite{gao2021simcse}. SimCSE's training objective is to pull
-positive pairs together in embedding space, and push negative pairs apart. In our context, positive and
-negative pairs are defined by closeness in the same text, creating self-supervised setting. SimCSE was
-previously shown successful on STS benchmarks and transfer tasks, which is why we use it as a main semantic
-meaning learning method. \\
-We training two architectures: encoder + pooler (BERT + feed-foward NN), encoder + projection (BERT + PCA).
-\subsection{Encoder + pooler}
-Here we briefly discuss implementation details, and all code is available. \\
-The encoder maps tokens to latent representations, and we use BERT for that. The pooler maps hidden states to
-low-dimensional embedding of sentences. \\
-In \cite{wang2023} found that performance loss can be decomposed into separate encoder and pooler
-contributions, which is why we use two-step training procedure. First, we freeze parameters of pooler and
-fine-tune the encoder, achieving best version of BERT for this dataset; then, we freeze the encoder and train
-only pooler. This allows to reduce encoder loss and pooler loss sequentially. \\
-We load 'bert-base-uncased' weights from Hugging Face for encoder \cite{devlin2019bert}, and construct a
-fully connected network with hidden-size x hidden-size layer, tanh activation, hidden-size x projection-size
-fully-connected layer (following \cite{wang2023}). We apply mean pooling to aggregate token embeddings into
-sentences embeddings; note that BERT porduces position-aware token representations, so orderial information
-is not lost.\\
-We train embeddings as follows. We apply SimCSE trick: a sentence passed as it and with dropout should have
-similar embeddings. For each anchor sentence, we find multipositive Normalized Temperature-scaled
-Cross-Entropy loss and optimize using Adam. \\
-\subsection{Encoder + projection}
-Encoder is BERT, followed by PCA. For given projection dimensionality $k$, we take first $k$ principal components.
+We use contrastive learning as described in SimCSE \cite{gao2021simcse}. SimCSE's training objective pulls
+positive pairs together in the embedding space and pushes negative pairs apart. In our context, positive and
+negative pairs are defined by closeness in the same document, creating a self-supervised setting. SimCSE was
+previously shown to be successful on STS benchmarks and transfer tasks, which is why we use it as the main
+method for learning sentence meaning. We train and evaluate two architectures: encoder + pooler (BERT + a
+feed-forward NN) and encoder + PCA (BERT + PCA). Below we briefly discuss implementation details. All the
+code is available at \href{https://github.com/AlenaResiko/UML}{github.com/AlenaResiko/UML}.
 
-\subsection{Base model}
-\texttt{BERT-base-uncased} with mean pooling. A projection head maps pooled
-representations to a target dimension $d \in \{4,16,64,256,767\}$ followed by $L_2$ normalization.
+\subsection{Encoder + Pooler}
+The encoder maps tokens to latent representations, and the pooler maps hidden states to
+low-dimensional embedding of sentences. \cite{wang2023} found that performance loss can be decomposed into
+separate encoder and pooler contributions, which is the motivation for using a two-step training procedure.
+First, we freeze the parameters of the pooler and fine-tune the encoder, achieving the best version of BERT
+for a particular dataset. Then, we freeze the encoder and train
+only the pooler. We do each step in three epochs. This procedure allows us to reduce the encoder loss and the
+pooler loss sequentially.
+
+We load \texttt{bert-base-uncased} weights from Hugging Face for BERT with the output in 768D. For the
+pooler, we construct a
+fully connected network with a hidden-size $\times$ hidden-size layer, tanh activation, followed by a
+hidden-size $\times$ projection-size
+fully-connected layer (following \cite{wang2023}). We apply mean pooling to aggregate token embeddings into
+sentence embeddings. The final output dimension is determined by the pooler. For our experiments, we sweep
+through $d \in \{4,16,64,256,767\}$.
+
+Note that BERT produces position-aware token representations, so the order information describing tokens'
+relative positions in a sentence is not lost.
+
+In training we apply the SimCSE trick: a sentence passed as is and then passed one more time with a dropout
+mask applied to the underlying model should have
+similar embeddings. For each anchor sentence, we compute the multi-positive normalized temperature-scaled
+cross-entropy loss and optimize using the Adam optimizer.
 
 \begin{figure}[h!]
 \centering
@@ -142,54 +147,70 @@ representations to a target dimension $d \in \{4,16,64,256,767\}$ followed by $L
 \label{fig:model_arch}
 \end{figure}
 
+\subsection{Encoder + PCA}
+The encoder is again BERT, followed by PCA allowing us to customize the final output dimension. For a given
+projection dimensionality $d$, we take the first $d$ principal components. We sweep through $d \in
+\{4,16,64,256,767\}$ to match the encoder + pooler experiments.
+
 \subsection{Training domains}
-We choose domains to capture different styles, word frequency, mode of communication. Given these are
-opposite fields, ability to capture both indicates strong ability to generalize across topics in language.\\
-Each song and each paper section is treated as one document, and neighboring sentences within a document form
-positive pairs. The corpora are token-matched for training compute parity:
+We choose domains to capture different styles, word frequencies, and modes of communication:
 
 1) Taylor Swift lyrics (short, repetitive, low-entropy)
 
 2) Nakul Verma's ML papers (long, information-dense)
 
-We split text into sentences, which we consider smallest meaningfully-complete unit. Pre-processing
-methodology is dicussed below.
+Each song and each paper section are treated as one document, and neighboring sentences within a document
+form positive pairs. The corpora are token-matched for training compute parity (since BERT operates on the
+token level, not sentence level). After pre-processing, we split the text into sentences, which we consider
+to be the smallest complete unit. Our pre-processing methodology is discussed below.
 
-\subsection{Data preprocessing}
+\subsection{Data Pre-processing}
 
-Downloading, cleaning, and formatting the datasets into sentence-level documents was a multistep process.
-
-For the lyrics dataset, there was a kaggle repository containing the entire Taylor Swift discography, which
-we used for our lyrics corpus. The cleanup included removing sequential duplicate sentences, filtering out
+For the lyrics dataset, we found a Kaggle repository containing the entire Taylor Swift discography and
+downloaded it for our lyrics corpus. The cleanup included removing sequential duplicate sentences, filtering out
 song and album metadata, and splitting the lyrics into individual sentences using the NLTK sentence
-tokenizer. Each newline was treated as its own sentence.
+tokenizer. Each newline was treated as an end-of-sentence marker.
 
-For the papers dataset, we used the arXiv API to download Nakul Verma's papers in pure latex form. There was
+For the scientific dataset, we used the arXiv API to download Nakul Verma's papers in pure LaTeX form. There was
 substantial cleaning and processing work involved from that point. First, we removed latex commands,
 equations, figures, tables, and references using regex patterns. Next, we split the cleaned text into
-sentences. These two actions required a fair amount of user judgement, and dimished the size of the usable corpus. \\
+sentences. These two actions required a fair amount of user judgement, and diminished the size of the usable corpus.
 
-Given two corpora, we create pairs of similar sentences in self-supervised manner through assigning
-similarity indicator based on sentence distance.
+Given two corpora, we create pairs of similar sentences in a self-supervised manner through assigning
+similarity based on sentence distance: if sentences are within a distance 5 of each other, they are deemed similar.
 
-\subsection{Training objective}
-We train unsupervised SimCSE-style contrastive models with multiple positive examples,
-sampling local neighbors within each document. Following Wang et al., 2023
-\cite{wang2023}, we use a two-step training scheme:
-
-Step 1. Freeze pooler, train encoder (3 epochs).
-
-Step 2. Freeze encoder, train pooler (3 epochs).
+\subsection{Training Objective}
+The goal of contrastive learning is to pull together representations of positive examples and push apart
+negatives: in this way we learn correct neighborhood structure. We use contrastive training as in
+\cite{gao2021simcse}. Let $P_i$ be a set of positive (near neighbors and itself) examples for each sentence
+and $e_i$ be embeddings of each sentence. The per-pair similarity score function is a dot product normalized
+by temperature $\tau$ :
+\[
+\exp S_{ij} = \exp\!\left(\frac{e_i^\top e_j}{\tau}\right)
+\]
+We want to maximize the ratio of similarity of positives to similarity of non-positives, averaged over $M$
+pairs in a batch:
+\[
+\mathcal{L}
+=
+\frac{1}{M} \sum_{i=1}^{M} - \log\!\left(
+\frac{\sum_{j \in P_i} \exp(S_{ij})}{\sum_{\substack{j=1 \\ j\neq i}}^{M} \exp(S_{ij})}
+\right).
+\]
+Viewed as a probability, the function inside the $\log$ is a conditional probability $p(j|i)$ of positive
+examples $j$ given an anchor sentence $i$. The training objective $\mathcal{L}$ is the cross-entropy over
+these conditional probabilities.
 
 \subsection{Evaluations}
 
 \begin{itemize}
-\item Geometry
+\item Geometry:
 \begin{itemize}
-\item Alignment and uniformity losses (Wang et al., 2020, \cite{wang2020contrastive}) on in-domain
+\item Alignment and uniformity losses (\cite{wang2020contrastive}) on in-domain
 and out-of-domain test sets. Alignment measures how close positive pairs are, and
-uniformity captures how evenly embeddings are spread on the hypersphere.
-\item t-SNE embeddings of sentences from songs and papers.
+uniformity captures how evenly embeddings are spread on the hypersphere (how much of the provided space they occupy).
+\item t-SNE embeddings of sentences from test songs and papers. We aim to see if the two types are separated
+into distinct clusters by the models and examine the cluster geometry qualitatively.
 \end{itemize}
 \item Transfer learning: STS-B Spearman rank correlations of sentence pair embeddings.
 \end{itemize}
@@ -205,17 +226,18 @@ before the full BERT size of 768D (see Fig. \ref{fig:stsb}). Paper-trained model
 contrast, only come to full potential at 767D, hinting at a much \textbf{higher intrinsic
 dimensionality of scientific text}. Since STS-B is out-of-distribution for both training
 corpora, the gap between the performance of songs- and papers-trained models cannot be
-attributed to lyrics being much "closer" to STS-B than papers. Instead, it reflects how
+attributed to lyrics being much "closer" to STS-B than papers. In fact, qualitatively we could argue that
+STS-B is closer to scientific text than to pop song lyrics. Instead, the performance gap reflects how
 contrastive fine-tuning under a low-dimensional bottleneck \textbf{reallocates capacity
 of the model}.
 
 On the lyrics corpus, the contrastive task is relatively simple and repetitive, so the
 model can solve it without drastically reshaping the pre-trained BERT geometry. A small
-projection head is enough to compress lyrics-specific structure while preserving generic
+output dimension is enough to compress lyrics-specific structure while preserving generic
 semantic directions that still transfer to STS-B.
 
 On the papers corpus, the contrastive task is much harder: the model must separate dense,
-technical sentences within and across sections. In low dimensions, the encoder and head
+technical sentences within and across sections. In low dimensions, the encoder and the pooler
 are forced to specialize for fine-grained distinctions, which distorts general-purpose
 semantics and hurts STS-B transfer. Only when we increase the projection size up to
 256-767D does the paper-trained model regain enough capacity to encode both in-domain
@@ -232,17 +254,17 @@ that \textbf{linear compression alone cannot expose semantic structure} -- the p
 \end{figure}
 
 \subsection{Uniformity and Alignment}
-All plots \ref{fig:losses} show the \textbf{alignment vs uniformity tradeoff}: higher
+All plots in Fig. \ref{fig:losses} show the \textbf{alignment vs uniformity tradeoff}: higher
 dimensions improve uniformity but degrade alignment. For PCA specifically, uniformity
 losses are much smaller than alignment losses for all dimensions, indicating that
-embedded sentences occupy the full hypersphere but do not preserve local similarity structure.
+embedded sentences occupy the full hypersphere but do not preserve the local similarity structure.
 
 For contrastive training, \textbf{in-domain data} (eg. songs embedded with a model
 trained on songs) \textbf{becomes well-spread} (good uniformity) but not overly tight,
 and \textbf{out-of-domain data} often collapses, achieving \textbf{artificially low
 alignment with poor global geometry}. This collapse likely occurs because the model is
 forced to project unfamiliar sentence structure into a space shaped only by in-domain
-positives, over-compressing local neighborhoods without preserving meaningful global
+positives, over-compressing local neighborhoods with unseen examples without preserving meaningful global
 structure. In addition, papers-trained models behave more similarly in terms of both
 losses on different domains, while songs-trained models have larger oscillations when
 domains are switched, hinting at more stable geometry learned by papers-based embeddings
@@ -259,7 +281,9 @@ across domains.
 Even with only 4 dimensions, the embeddings already separate lyrics from papers as two
 distinct clusters (see Fig. \ref{fig:tsne}), indicating that coarse domain identity
 survives aggressive compression. However, in 4D the clusters are elongated and less
-compact, with visibly distorted shapes. At 16 dimensions, the clusters become rounder,
+compact, with visibly distorted shapes. In addition, there is a group of paper sentences that end up being
+much closer to the songs cluster (concentrated in the bottom right part of the plot). At 16 dimensions, the
+clusters become rounder,
 and local neighborhoods look more stable. This suggests that increasing dimensionality
 from 4D to 16D does not create domain separation from scratch, but instead improves the
 within-domain geometry: it reduces compression artifacts and yields a smoother manifold,
@@ -283,16 +307,36 @@ For papers-based models, we see a similar trend, but the dimension cutoff at whi
 pooler stops giving much benefit is higher, somewhere between 128D and 256D (again
 hinting at the higher intrinsic dimensionality of scientific data). In addition, only
 training the pooler with the frozen BERT backbone yields much better Spearman rank
-results for papers-trained models than for songs-trained models -- perhaps hinting to us
+results for papers-trained models than for songs-trained models, perhaps hinting
 that the frozen BERT encoder is initially better suited for academic text.
 
-%/ replace with aksel's combined results for both songs and papers
 \begin{figure}[h!]
 \centering
-\includegraphics[width=1.0\linewidth]{Images/ablation_2ax.png}
+\includegraphics[width=1.0\linewidth]{Images/ablation.png}
 \caption{Ablation study on the two-step training procedure.}
 \label{fig:ablation}
 \end{figure}
+
+\section{Conclusion}
+
+\subsection{Summary of Findings}
+\begin{itemize}
+\item \textbf{Lyrics-trained models dominate at low dimensions (4–256D) on STS-B}, while
+papers-trained models only overtake at 767D $\Rightarrow$ \textbf{scientific text appears
+inherently higher-dimensional}.
+\item \textbf{Uniformity and alignment conflict} with each other, with
+\textbf{papers-trained models being more stable} when transitioning from in-distribution
+to out-of-distribution data.
+\item \textbf{Low-dimensional embeddings} are able to \textbf{separate domains (even at
+4D)}, but more meaningful local structure emerges only at 16D or more.
+\item Linear compression \textbf{(PCA) is insufficient for transfer learning} tasks in
+our experiments: contrastive learning is necessary to expose semantic structure even at
+small dimensions. We recommend retraining, rather than linearly transforming embeddings, when the target
+dimensionality changes.
+\item The \textbf{two-step training} procedure of the encoder + pooler setup is \textbf{necessary} for
+satisfactory performance in \textbf{extreme dimensionality reduction} settings. When we increase the output
+dimension, training the pooler becomes less important.
+\end{itemize}
 
 \subsection{Challenges and Limitations}
 We note that all reported results depend on a specific choice of backbone (BERT-base),
@@ -300,62 +344,45 @@ corpus size, and contrastive neighborhood definition. In addition, while STS-B S
 rank results provide an insightful semantic probe, it represents only one notion of
 transfer learning performance.
 
-\paragraph*{Evaluation Criteria} Selection of evaluation metrics (alignment, uniformity, STS-B Spearman rank)
-was an area of much thought and discussion. Drawing inspiration from Gao et al. \cite{gao2021simcse}, we
+\paragraph*{Defining Similarity} Drawing inspiration from \cite{gao2021simcse}, we
 explored enriching our unlabeled dataset with self-supervised positive pairs. We landed on sentence proximity
-as a straightforward and effective method to generate these pairs without additional labeling.
+as a straightforward and effective method to generate these pairs without additional labeling. However, many
+other approaches exist: only using the same sentence embedded by the same network with random dropout masks
+twice is one interesting example. One could also use a large network to label similarity, allowing for
+knowledge distillation. Our approach could deem unrelated sentences that appear consecutively in a document
+similar, which is an important limitation introducing a lot of noise.
 
-\paragraph*{Contrasting Loss Finetuning} By design, the constrastive loss finetuning only seeks to optimize
-local structure and better distribute embeddings along the unit hypersphere. However, the inherent upper
-bound on this optimization objective comes from the pre-trained representations provided by BERT. Our
-procedure is not designed to, nor is it likely to, drastically alter the global structure of the embedding
-space. Hence, this route will not likely yield a dramatic improvement in sentence embedding, or revolutionize the field.
+\paragraph*{Contrastive Loss Fine-tuning} By design, contrastive fine-tuning mainly acts on local geometry:
+it pulls positive pairs together and pushes negatives apart, encouraging a more uniform distribution of
+representations on the unit hypersphere. Because most of the representational structure is inherited from the
+pretrained BERT encoder, the optimization is effectively upper-bounded by these initial representations. Our
+procedure does not attempt, nor is it capable of, substantially re-architecting the global geometry of the
+embedding space. Thus, while contrastive learning can refine local neighborhoods and yield meaningful
+improvements, it is not expected to produce dramatic, paradigm-shifting gains in sentence embedding quality.
 
-\paragraph*{Scope} Due to time and resource constraints, we limited out experiments to two esoteric domains
-of the english language. A more comprehensive study would include a much broader array of domains,
-self-labeling algorithms, and backbone architectures.
+\paragraph*{Scope} Due to time and resource constraints, we limited our experiments to two narrow domains of
+the English language. A more comprehensive study would include a much broader array of domains, self-labeling
+algorithms, and backbone architectures beyond \texttt{BERT-base-uncased} (e.g., RoBERTa, DeBERTa, etc.).
 
-\paragraph*{BERT} As our backbone, BERT-base-uncased is a well-established model for sentence embeddings.
-However, there are more recent encoder architectures (e.g., RoBERTa, DeBERTa, etc.) available for
-exploration. In addition, the past five years have seen a preponderance of investment into closed-source LLMs
-(e.g., GPT, Gemini, Grok, Claude, etc.) that may offer superior embedding capabilities (with the caveat that
-it's uncertain that cleanly demarcated encoder-decoder patterns exist in said closed models).
 \subsection{Future Directions}
 For future work, we would like to explore \textbf{additional domains} (such as news, code
-comments etc.), try other \textbf{embedding models beyond BERT}, use
+comments, etc.), try other \textbf{embedding models beyond BERT}, use
 \textbf{alternative training objectives} (for instance, non-contrastive methods), enrich the suite of
-\textbf{evaluation methods}, and implement competing self-supervised \textbf{sentence pair labeling algorithms}.
+\textbf{evaluation methods}, and implement competing self-supervised \textbf{sentence pair labeling
+algorithms}. This wider range of methods can allow for better capture of sentence structure's geometry.
 
 Expanding the scope a bit, it would be interesting to move beyond all-purpose sentence embeddings and explore
 \textbf{task-specific embeddings} and \textbf{multimodal embeddings}, modeling language in a
-\textbf{hierarchical manner}, moving beyond euclidean spaces into \textbf{non-euclidean geometries}, and
-exploring the notion of \textbf{intrinsic dimensionality}.
+\textbf{hierarchical manner}, moving beyond Euclidean spaces into \textbf{non-Euclidean geometries}, and
+exploring the notion of \textbf{intrinsic dimensionality} more rigorously.
 
-\section{Conclusion}
-
-\subsection{Summary of Findings}
-\begin{itemize}
-\item \textbf{Lyrics-trained models dominate at low dimensions (4–256D) on STS-B}, while
-papers-trained models only overtake at 768D $\Rightarrow$ \textbf{scientific text appears
-inherently higher-dimensional}.
-\item \textbf{Uniformity and alignment conflict} with each other, with
-\textbf{papers-trained models being more stable} when transitioning from in-distribution
-to out-of-distribution data.% TODO: this sentence doesn't sound coherent
-\item \textbf{Low-dimensional embeddings} are able to \textbf{separate domains (even at
-4D)}, but more meaningful local structure emerges only at 16D or more.
-\item Linear compression \textbf{(PCA) is insufficient for transfer learning} tasks in
-our experiments: contrastive learning is necessary to expose semantic structure even at
-small dimensions. It is advised to retrain, instead of linearly transform dimensions, if
-target dimensionality changes.
-\end{itemize}
-
-\subsection{Contributions of each team member}
+\subsection{Contributions of Each Team Member}
 \begin{itemize}
 \item \textbf{A.C.}: Partial preprocessing, BERT+pooler contrast-and-freeze architecture implementation,
 BERT+PCA architecture implementation and evaluation on 4-767D, partial report write-up.
 \item \textbf{A.K-W.}: Data collection and preprocessing for both datasets, ablation
-studies on the BERT+pooler architecture for both datasets with training and evaluation on
-4-767D, partial report write-up.
+study on the BERT+pooler architecture for both datasets with training and evaluation on
+4-1024D, partial report write-up.
 \item \textbf{M.G.}: Initial literature review, evaluation suite and graphics
 implementation, baseline BERT+pooler training and evaluation on 4-767D for both datasets,
 poster preparation, partial report write-up.
@@ -366,14 +393,10 @@ We are grateful to Prof. Nakul Verma, and our teaching assistants, Noah Bergam a
 Snoeck, for their feedback on our ideas.
 
 \section*{Code Availability}
-All our code can be found at \hyperlink{Github}{https://github.com/AlenaResiko/UML}.
+All our code can be found at \href{https://github.com/AlenaResiko/UML}{github.com/AlenaResiko/UML}.
 
 \bibliographystyle{unsrtnat}
 \bibliography{references}
-
-\raggedbottom
-
-\section*{Appendix}
 
 \raggedbottom
 
